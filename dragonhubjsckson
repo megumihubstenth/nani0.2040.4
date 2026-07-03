@@ -1,21 +1,27 @@
--- [[ Obfuscated ]] --
-local _d=function(_0,_1)local _2=""for _,_3 in ipairs(_0)do _2=_2..string.char(_3~_1)end;return _2 end
-local Players         = game:GetService((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({117,73,68,92,64,87,86},37))
-local TweenService    = game:GetService((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,82,64,64,75,118,64,87,83,76,70,64},37))
-local RunService      = game:GetService((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({119,80,75,118,64,87,83,76,70,64},37))
-local ContentProvider = game:GetService((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({102,74,75,81,64,75,81,117,87,74,83,76,65,64,87},37))
-local SoundService    = game:GetService((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,74,80,75,65,118,64,87,83,76,70,64},37))
-local UserInputService = game:GetService((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,86,64,87,108,75,85,80,81,118,64,87,83,76,70,64},37))
+-- ╔══════════════════════════════════════════════════════════╗
+-- ║        DRAGON HUB  —  LOADING SCREEN + KEY SYSTEM       ║
+-- ║  Loading screen plays → burn exit → key GUI appears      ║
+-- ╚══════════════════════════════════════════════════════════╝
+
+local Players         = game:GetService("Players")
+local TweenService    = game:GetService("TweenService")
+local RunService      = game:GetService("RunService")
+local ContentProvider = game:GetService("ContentProvider")
+local SoundService    = game:GetService("SoundService")
+local UserInputService = game:GetService("UserInputService")
 
 local LocalPlayer = Players.LocalPlayer
-local playerGui   = LocalPlayer:WaitForChild((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({117,73,68,92,64,87,98,80,76},37))
+local playerGui   = LocalPlayer:WaitForChild("PlayerGui")
 
+-- ═══════════════════════════════════════════════════════════
+-- CONFIG  (Loading Screen)
+-- ═══════════════════════════════════════════════════════════
 local CFG = {
-	DECAL_ID     = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,20,22,23,23,17,17,19,22,16,19,23,23,18,16,29},37),
+	DECAL_ID     = "rbxassetid://132244635622758",
 	LOADING_TIME = 6,
 
-	SFX_SUKUNA   = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,20,20,22,17,28,20,21,29,21,23,16,20,29,22,22},37),
-	SFX_BURNING  = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,20,22,28,19,19,28,20,23,28,22,22,16,21,22,29},37),
+	SFX_SUKUNA   = "rbxassetid://113491080251833",
+	SFX_BURNING  = "rbxassetid://139669129335038",
 
 	C_FIRE   = Color3.fromRGB(255,  70,  10),
 	C_GOLD   = Color3.fromRGB(255, 180,  20),
@@ -28,44 +34,50 @@ local CFG = {
 	C_GODRAY = Color3.fromRGB(255, 160,  40),
 }
 
+-- ═══════════════════════════════════════════════════════════
+-- CONFIG  (Key System)
+-- ═══════════════════════════════════════════════════════════
 local KEY_CFG = {
-	Title       = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,87,68,66,74,75,5,109,80,71,5},37),
-	Subtitle    = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({111,74,76,75,5,97,76,86,70,74,87,65,5,81,74,5,66,64,81,5,78,64,92,5,68,75,65,5,86,81,68,92,5,112,85,65,68,81,64,65,5,8,5,96,75,81,64,87,5,92,74,80,87,5,110,64,92,5,71,64,73,74,82,5,81,74,5,66,64,81,5,118,81,68,87,81,64,65,11},37),
-	GetKeyLink  = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({77,81,81,85,86,31,10,10,65,76,86,70,74,87,65,11,66,66,10,115,75,64,22,81,92,17,22,84},37),
-	ValidKeys   = { (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({98,68,66,23,97,87,68,66,74,75,109,80,71},37), (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,64,70,87,64,81},37) },
+	Title       = "Dragon Hub ",
+	Subtitle    = "Join Discord to get key and stay Updated - Enter your Key below to get Started.",
+	GetKeyLink  = "https://discord.gg/Vne3ty43q",
+	ValidKeys   = { "Gag2DragonHub", "Secret" },
 	LogoTextureId = "74762905160556",
-	WebsiteUrl  = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({77,81,81,85,86,31,10,10,66,74,79,76,80,86,70,87,76,85,81,86,11,73,74,83,68,71,73,64},37),
-	SupportedGames = { (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({20,11,5,113,86,71},37), (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({23,11,5,111,79,86},37), (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({22,11,5,98,68,66,5,23},37) },
+	WebsiteUrl  = "https://gojiuscripts.lovable",
+	SupportedGames = { "1. Tsb", "2. Jjs", "3. Gag 2" },
 }
 
+-- ═══════════════════════════════════════════════════════════
+-- ALIVE FLAG  +  SAFE HELPERS
+-- ═══════════════════════════════════════════════════════════
 local alive = true
 
 local function New(class, props, parent)
-	local llI = Instance.new(class)
-	for k, v in pairs(props) do llI[k] = v end
-	if parent then llI.Parent = parent end
-	return llI
+	local inst = Instance.new(class)
+	for k, v in pairs(props) do inst[k] = v end
+	if parent then inst.Parent = parent end
+	return inst
 end
 
-local function Tween(llI, t, style, dir, props)
-	if not alive or not llI or not llI.Parent then return end
-	local ll1, tw = pcall(TweenService.Create, TweenService, llI,
+local function Tween(inst, t, style, dir, props)
+	if not alive or not inst or not inst.Parent then return end
+	local ok, tw = pcall(TweenService.Create, TweenService, inst,
 		TweenInfo.new(t, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
-	if ll1 and tw then tw:Play() return tw end
+	if ok and tw then tw:Play() return tw end
 end
 
-local function CloseTween(llI, t, style, dir, props)
-	if not llI or not llI.Parent then return end
-	local ll1, tw = pcall(TweenService.Create, TweenService, llI,
+local function CloseTween(inst, t, style, dir, props)
+	if not inst or not inst.Parent then return end
+	local ok, tw = pcall(TweenService.Create, TweenService, inst,
 		TweenInfo.new(t, style or Enum.EasingStyle.Quad, dir or Enum.EasingDirection.Out), props)
-	if ll1 and tw then tw:Play() return tw end
+	if ok and tw then tw:Play() return tw end
 end
 
-local function Sine(llI, t, props)
-	return Tween(llI, t, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, props)
+local function Sine(inst, t, props)
+	return Tween(inst, t, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, props)
 end
-local function Lin(llI, t, props)
-	return Tween(llI, t, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, props)
+local function Lin(inst, t, props)
+	return Tween(inst, t, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, props)
 end
 
 local function Loop(fn)
@@ -74,590 +86,608 @@ local function Loop(fn)
 	end)
 end
 
-local lIl = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,74,80,75,65},37), { SoundId = CFG.SFX_SUKUNA, Volume = 0.9, Looped = false }, SoundService)
-local lII   = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,74,80,75,65},37), { SoundId = CFG.SFX_BURNING, Volume = 1.0, Looped = false }, SoundService)
+-- ═══════════════════════════════════════════════════════════
+-- SOUNDS
+-- ═══════════════════════════════════════════════════════════
+local SukunaSound = New("Sound", { SoundId = CFG.SFX_SUKUNA, Volume = 0.9, Looped = false }, SoundService)
+local BurnSound   = New("Sound", { SoundId = CFG.SFX_BURNING, Volume = 1.0, Looped = false }, SoundService)
 
-local lI1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,70,87,64,64,75,98,80,76},37), {
-	Name           = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,87,68,66,74,75,109,80,71,105,74,68,65,76,75,66},37),
+-- ═══════════════════════════════════════════════════════════
+-- ROOT GUI
+-- ═══════════════════════════════════════════════════════════
+local Gui = New("ScreenGui", {
+	Name           = "DragonHubLoading",
 	ResetOnSpawn   = false,
 	IgnoreGuiInset = true,
 	DisplayOrder   = 999,
 	Parent         = playerGui,
 })
 
-local l1l = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local Base = New("Frame", {
 	Size                   = UDim2.fromScale(1, 1),
 	BackgroundColor3       = CFG.C_DARK,
 	BackgroundTransparency = 1,
 	BorderSizePixel        = 0,
-}, lI1)
+}, Gui)
 
-local l1I = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,72,68,66,64,105,68,71,64,73},37), {
+local BgImg = New("ImageLabel", {
 	Size                   = UDim2.fromScale(1, 1),
 	Image                  = CFG.DECAL_ID,
 	BackgroundTransparency = 1,
 	ImageTransparency      = 1,
 	ScaleType              = Enum.ScaleType.Crop,
 	ZIndex                 = 1,
-}, l1l)
+}, Base)
 
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,72,68,66,64,105,68,71,64,73},37), {
+New("ImageLabel", {
 	Size = UDim2.fromScale(1.5, 1.5), AnchorPoint = Vector2.new(0.5, 0.5),
-	Position = UDim2.fromScale(0.5, 0.5), Image = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,19,20,16,22,21,16,23,21,29,18},37),
+	Position = UDim2.fromScale(0.5, 0.5), Image = "rbxassetid://6153052087",
 	ImageColor3 = Color3.new(0,0,0), ImageTransparency = 0.05,
 	BackgroundTransparency = 1, ZIndex = 2,
-}, l1l)
+}, Base)
 
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,72,68,66,64,105,68,71,64,73},37), {
+New("ImageLabel", {
 	Size = UDim2.fromScale(1.5, 1.5), AnchorPoint = Vector2.new(0.5, 0.5),
-	Position = UDim2.fromScale(0.5, 0.5), Image = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,19,20,16,22,21,16,23,21,29,18},37),
+	Position = UDim2.fromScale(0.5, 0.5), Image = "rbxassetid://6153052087",
 	ImageColor3 = CFG.C_FIRE, ImageTransparency = 0.80,
 	BackgroundTransparency = 1, ZIndex = 3,
-}, l1l)
+}, Base)
 
 do
-	local l11 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	local fog = New("Frame", {
 		Size = UDim2.fromScale(1,1), BackgroundColor3 = Color3.new(0,0,0),
 		BackgroundTransparency = 0, BorderSizePixel = 0, ZIndex = 4,
-	}, l1l)
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Transparency = NumberSequence.new({
+	}, Base)
+	local g = Instance.new("UIGradient")
+	g.Transparency = NumberSequence.new({
 		NumberSequenceKeypoint.new(0, 0.92),
 		NumberSequenceKeypoint.new(0.45, 0.68),
 		NumberSequenceKeypoint.new(1, 0.0),
 	})
-	Ill.Rotation = 270; Ill.Parent = l11
+	g.Rotation = 270; g.Parent = fog
 end
 
-
-local IlI = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+-- ── God Rays ─────────────────────────────────────────────────
+local GodRayLayer = New("Frame", {
 	Size = UDim2.fromScale(1,1), BackgroundTransparency = 1, ZIndex = 5, ClipsDescendants = true,
-}, l1l)
-local Il1 = {}
+}, Base)
+local godRays = {}
 for i = 1, 8 do
-	local IIl=math.random(60,200); local III=math.random(5,95)/100
-	local II1=math.random(-40,-12); local I1l=0.86+math.random()*0.08
-	local I1I = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-		Size = UDim2.new(0,IIl,1.6,0), AnchorPoint = Vector2.new(0.5,0),
-		Position = UDim2.fromScale(III,-0.35), BackgroundColor3 = CFG.C_GODRAY,
-		BackgroundTransparency = I1l, BorderSizePixel = 0, ZIndex = 5, Rotation = II1,
-	}, IlI)
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Transparency = NumberSequence.new({
+	local w=math.random(60,200); local xp=math.random(5,95)/100
+	local rot=math.random(-40,-12); local tr0=0.86+math.random()*0.08
+	local gr = New("Frame", {
+		Size = UDim2.new(0,w,1.6,0), AnchorPoint = Vector2.new(0.5,0),
+		Position = UDim2.fromScale(xp,-0.35), BackgroundColor3 = CFG.C_GODRAY,
+		BackgroundTransparency = tr0, BorderSizePixel = 0, ZIndex = 5, Rotation = rot,
+	}, GodRayLayer)
+	local g = Instance.new("UIGradient")
+	g.Transparency = NumberSequence.new({
 		NumberSequenceKeypoint.new(0,1), NumberSequenceKeypoint.new(0.25,0),
 		NumberSequenceKeypoint.new(0.75,0), NumberSequenceKeypoint.new(1,1),
 	})
-	Ill.Parent = I1I
-	Il1[i] = {ray=I1I, baseTr=I1l, phase=math.random()*math.pi*2}
+	g.Parent = gr
+	godRays[i] = {ray=gr, baseTr=tr0, phase=math.random()*math.pi*2}
 end
 
-
+-- ── Scanlines ─────────────────────────────────────────────────
 do
-	local I11 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	local sl = New("Frame", {
 		Size=UDim2.fromScale(1,1), BackgroundTransparency=1, ZIndex=24, ClipsDescendants=false,
-	}, l1l)
-	local 1ll=4; local 1lI=math.ceil(1080/1ll)+4
-	for i = 1, 1lI do
-		New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-			Size=UDim2.new(1,0,0,1), Position=UDim2.fromOffset(0,(i-1)*1ll),
+	}, Base)
+	local rowH=4; local count=math.ceil(1080/rowH)+4
+	for i = 1, count do
+		New("Frame", {
+			Size=UDim2.new(1,0,0,1), Position=UDim2.fromOffset(0,(i-1)*rowH),
 			BackgroundColor3=Color3.new(0,0,0), BackgroundTransparency=0.82,
 			BorderSizePixel=0, ZIndex=24,
-		}, I11)
+		}, sl)
 	end
 end
 
-
-local 1l1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {Size=UDim2.fromScale(1,1), BackgroundTransparency=1, ZIndex=6}, l1l)
-local 1Il = {}
-local 1II = {CFG.C_FIRE, CFG.C_GOLD, CFG.C_EMBER, Color3.fromRGB(255,230,90)}
+-- ── Sparks ────────────────────────────────────────────────────
+local SparkLayer = New("Frame", {Size=UDim2.fromScale(1,1), BackgroundTransparency=1, ZIndex=6}, Base)
+local sparks = {}
+local sparkColors = {CFG.C_FIRE, CFG.C_GOLD, CFG.C_EMBER, Color3.fromRGB(255,230,90)}
 for i = 1, 60 do
-	local 1I1=math.random(2,9); local 11l=1II[math.random(1,#1II)]
-	local 11I = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-		Size=UDim2.fromOffset(1I1,1I1), Position=UDim2.fromScale(math.random(),1.1),
-		BackgroundColor3=11l, BackgroundTransparency=math.random()*0.2, BorderSizePixel=0, ZIndex=7,
-	}, 1l1)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, 11I)
-	local 111 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-		Size=UDim2.fromOffset(1I1*3,1I1*3), AnchorPoint=Vector2.new(0.5,0.5),
-		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=11l,
+	local sz=math.random(2,9); local col=sparkColors[math.random(1,#sparkColors)]
+	local sp = New("Frame", {
+		Size=UDim2.fromOffset(sz,sz), Position=UDim2.fromScale(math.random(),1.1),
+		BackgroundColor3=col, BackgroundTransparency=math.random()*0.2, BorderSizePixel=0, ZIndex=7,
+	}, SparkLayer)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, sp)
+	local hal = New("Frame", {
+		Size=UDim2.fromOffset(sz*3,sz*3), AnchorPoint=Vector2.new(0.5,0.5),
+		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=col,
 		BackgroundTransparency=0.65, BorderSizePixel=0, ZIndex=6,
-	}, 11I)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, 111)
-	1Il[i] = {f=11I, _x177=math.random(), y=1.05+math.random()*0.5, spd=0.05+math.random()*0.14, 1lll=(math.random()-0.5)*0.002}
+	}, sp)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, hal)
+	sparks[i] = {f=sp, x=math.random(), y=1.05+math.random()*0.5, spd=0.05+math.random()*0.14, dx=(math.random()-0.5)*0.002}
 end
 
-
-local llll = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {Size=UDim2.fromScale(1,1), BackgroundTransparency=1, ZIndex=7}, l1l)
-local lllI = {}
-local lll1 = {CFG.C_FIRE, CFG.C_GOLD, CFG.C_EMBER}
+-- ── Flame Streaks ─────────────────────────────────────────────
+local FlameLayer = New("Frame", {Size=UDim2.fromScale(1,1), BackgroundTransparency=1, ZIndex=7}, Base)
+local flames = {}
+local flameColors = {CFG.C_FIRE, CFG.C_GOLD, CFG.C_EMBER}
 for i = 1, 10 do
-	local llIl=0.38+math.random()*0.52; local llII=math.random(1,5)
-	local llI1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-		Size=UDim2.new(0,0,0,llII), Position=UDim2.fromScale(-0.05,llIl),
-		BackgroundColor3=lll1[math.random(1,3)], BackgroundTransparency=0.15,
+	local yp=0.38+math.random()*0.52; local h=math.random(1,5)
+	local fl = New("Frame", {
+		Size=UDim2.new(0,0,0,h), Position=UDim2.fromScale(-0.05,yp),
+		BackgroundColor3=flameColors[math.random(1,3)], BackgroundTransparency=0.15,
 		BorderSizePixel=0, ZIndex=7,
-	}, llll)
-	lllI[i] = {f=llI1, llIl=llIl, llII=llII, delay=math.random()*4}
+	}, FlameLayer)
+	flames[i] = {f=fl, yp=yp, h=h, delay=math.random()*4}
 end
 
-
-local ll1l = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+-- ── Outer Ring ────────────────────────────────────────────────
+local RingContainer = New("Frame", {
 	Size=UDim2.fromOffset(600,370), AnchorPoint=Vector2.new(0.5,0.5),
 	Position=UDim2.fromScale(0.5,0.55), BackgroundTransparency=1, ZIndex=8,
-}, l1l)
-local ll1I = 305
+}, Base)
+local RING_R = 305
 for i = 1, 32 do
-	local ll11=math.rad((i-1)*(360/32))
-	local lIll=math.cos(ll11)*ll1I; local lIlI=math.sin(ll11)*ll1I
-	local lIl1=(i%8==0); local lIIl=(i%4==0)
-	local 1I1=lIl1 and 16 or (lIIl and 9 or 3)
-	local 11l=lIl1 and CFG.C_CYAN or (lIIl and CFG.C_GOLD or CFG.C_FIRE)
-	local lIII = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-		Size=UDim2.fromOffset(1I1,1I1), AnchorPoint=Vector2.new(0.5,0.5),
-		Position=UDim2.new(0.5,lIll,0.5,lIlI), BackgroundColor3=11l,
-		BackgroundTransparency=lIIl and 0 or 0.2, BorderSizePixel=0, ZIndex=8,
-	}, ll1l)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, lIII)
-	if lIIl then
-		local lII1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-			Size=UDim2.fromOffset(1I1*3,1I1*3), AnchorPoint=Vector2.new(0.5,0.5),
-			Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=11l,
+	local angle=math.rad((i-1)*(360/32))
+	local cx=math.cos(angle)*RING_R; local cy=math.sin(angle)*RING_R
+	local isDiam=(i%8==0); local isGem=(i%4==0)
+	local sz=isDiam and 16 or (isGem and 9 or 3)
+	local col=isDiam and CFG.C_CYAN or (isGem and CFG.C_GOLD or CFG.C_FIRE)
+	local tick2 = New("Frame", {
+		Size=UDim2.fromOffset(sz,sz), AnchorPoint=Vector2.new(0.5,0.5),
+		Position=UDim2.new(0.5,cx,0.5,cy), BackgroundColor3=col,
+		BackgroundTransparency=isGem and 0 or 0.2, BorderSizePixel=0, ZIndex=8,
+	}, RingContainer)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, tick2)
+	if isGem then
+		local gh = New("Frame", {
+			Size=UDim2.fromOffset(sz*3,sz*3), AnchorPoint=Vector2.new(0.5,0.5),
+			Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=col,
 			BackgroundTransparency=0.68, BorderSizePixel=0, ZIndex=7,
-		}, lIII)
-		New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, lII1)
+		}, tick2)
+		New("UICorner", {CornerRadius=UDim.new(1,0)}, gh)
 	end
 end
 
-local lI1l = {}
-local lI1I = {CFG.C_FIRE, CFG.C_GOLD, CFG.C_CYAN}
+local orbs = {}
+local orbPalette = {CFG.C_FIRE, CFG.C_GOLD, CFG.C_CYAN}
 for i = 1, 3 do
-	local 11l=lI1I[i]; local lI11={}
+	local col=orbPalette[i]; local trail={}
 	for t = 1, 5 do
-		local l1ll=math.max(2,16-t*3)
-		local l1lI = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
-			Size=UDim2.fromOffset(l1ll,l1ll), AnchorPoint=Vector2.new(0.5,0.5),
-			Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=11l,
+		local gs=math.max(2,16-t*3)
+		local gf = New("Frame", {
+			Size=UDim2.fromOffset(gs,gs), AnchorPoint=Vector2.new(0.5,0.5),
+			Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=col,
 			BackgroundTransparency=0.4+t*0.12, BorderSizePixel=0, ZIndex=7,
-		}, ll1l)
-		New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, l1lI)
-		lI11[t] = l1lI
+		}, RingContainer)
+		New("UICorner", {CornerRadius=UDim.new(1,0)}, gf)
+		trail[t] = gf
 	end
-	local l1l1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	local orb = New("Frame", {
 		Size=UDim2.fromOffset(18,18), AnchorPoint=Vector2.new(0.5,0.5),
-		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=11l,
+		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=col,
 		BackgroundTransparency=0, BorderSizePixel=0, ZIndex=9,
-	}, ll1l)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, l1l1)
-	local l1Il = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	}, RingContainer)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, orb)
+	local glw = New("Frame", {
 		Size=UDim2.fromOffset(40,40), AnchorPoint=Vector2.new(0.5,0.5),
-		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=11l,
+		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=col,
 		BackgroundTransparency=0.58, BorderSizePixel=0, ZIndex=8,
-	}, ll1l)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, l1Il)
-	lI1l[i] = {l1l1=l1l1, glow=l1Il, lI11=lI11, offset=(i-1)*(2*math.pi/3), history={}}
+	}, RingContainer)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, glw)
+	orbs[i] = {orb=orb, glow=glw, trail=trail, offset=(i-1)*(2*math.pi/3), history={}}
 end
 
-local l1II = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+-- ═══════════════════════════════════════════════════════════
+-- MAIN CONTENT PANEL
+-- ═══════════════════════════════════════════════════════════
+local Panel = New("Frame", {
 	Size=UDim2.fromOffset(570,320), AnchorPoint=Vector2.new(0.5,0.5),
 	Position=UDim2.fromScale(0.5,0.68), BackgroundColor3=CFG.C_PANEL,
 	BackgroundTransparency=1, BorderSizePixel=0, ZIndex=10,
-}, l1l)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(0,22)}, l1II)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+}, Base)
+New("UICorner", {CornerRadius=UDim.new(0,22)}, Panel)
+New("Frame", {
 	Size=UDim2.new(1,-4,1,-4), AnchorPoint=Vector2.new(0.5,0.5),
 	Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=Color3.fromRGB(255,255,255),
 	BackgroundTransparency=0.97, BorderSizePixel=0, ZIndex=10,
-}, l1II)
-local l1I1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,118,81,87,74,78,64},37), {
+}, Panel)
+local Stroke1 = New("UIStroke", {
 	Color=CFG.C_FIRE, Thickness=3.0, Transparency=0.08,
 	ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-}, l1II)
-local l11l = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+}, Panel)
+local Halo = New("Frame", {
 	Size=UDim2.fromOffset(600,350), AnchorPoint=Vector2.new(0.5,0.5),
 	Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=CFG.C_FIRE,
 	BackgroundTransparency=1, BorderSizePixel=0, ZIndex=9,
-}, l1l)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(0,26)}, l11l)
-local l11I = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+}, Base)
+New("UICorner", {CornerRadius=UDim.new(0,26)}, Halo)
+local Halo2 = New("Frame", {
 	Size=UDim2.fromOffset(650,400), AnchorPoint=Vector2.new(0.5,0.5),
 	Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=CFG.C_GOLD,
 	BackgroundTransparency=1, BorderSizePixel=0, ZIndex=8,
-}, l1l)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(0,30)}, l11I)
-local l111 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+}, Base)
+New("UICorner", {CornerRadius=UDim.new(0,30)}, Halo2)
+local InnerGlow = New("Frame", {
 	Size=UDim2.fromScale(1,1), BackgroundColor3=CFG.C_FIRE,
 	BackgroundTransparency=0.88, BorderSizePixel=0, ZIndex=10,
-}, l1II)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(0,22)}, l111)
-local Illl = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+}, Panel)
+New("UICorner", {CornerRadius=UDim.new(0,22)}, InnerGlow)
+local PanelShimmer = New("Frame", {
 	Size=UDim2.new(0.5,0,2.5,0), AnchorPoint=Vector2.new(0.5,0.5),
 	Position=UDim2.fromScale(-0.5,0.5), BackgroundColor3=CFG.C_WHITE,
 	BackgroundTransparency=0.91, BorderSizePixel=0, ZIndex=16, Rotation=-28,
-}, l1II)
+}, Panel)
 do
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Transparency = NumberSequence.new({
+	local g = Instance.new("UIGradient")
+	g.Transparency = NumberSequence.new({
 		NumberSequenceKeypoint.new(0,1), NumberSequenceKeypoint.new(0.5,0.82), NumberSequenceKeypoint.new(1,1),
 	})
-	Ill.Parent = Illl
+	g.Parent = PanelShimmer
 end
-local IllI = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local AccentLine = New("Frame", {
 	Size=UDim2.new(0.88,0,0,2), AnchorPoint=Vector2.new(0.5,1),
 	Position=UDim2.new(0.5,0,1,-22), BackgroundColor3=CFG.C_CYAN,
 	BackgroundTransparency=0.2, BorderSizePixel=0, ZIndex=11,
-}, l1II)
+}, Panel)
 do
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Color = ColorSequence.new({
+	local g = Instance.new("UIGradient")
+	g.Color = ColorSequence.new({
 		ColorSequenceKeypoint.new(0,Color3.new(0,0,0)),
 		ColorSequenceKeypoint.new(0.5,CFG.C_CYAN),
 		ColorSequenceKeypoint.new(1,Color3.new(0,0,0)),
 	})
-	Ill.Parent = IllI
+	g.Parent = AccentLine
 end
-local Ill1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local TopAccentLine = New("Frame", {
 	Size=UDim2.new(0.88,0,0,1), AnchorPoint=Vector2.new(0.5,0),
 	Position=UDim2.new(0.5,0,0,22), BackgroundColor3=CFG.C_GOLD,
 	BackgroundTransparency=0.3, BorderSizePixel=0, ZIndex=11,
-}, l1II)
+}, Panel)
 do
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Color = ColorSequence.new({
+	local g = Instance.new("UIGradient")
+	g.Color = ColorSequence.new({
 		ColorSequenceKeypoint.new(0,Color3.new(0,0,0)),
 		ColorSequenceKeypoint.new(0.5,CFG.C_GOLD),
 		ColorSequenceKeypoint.new(1,Color3.new(0,0,0)),
 	})
-	Ill.Parent = Ill1
+	g.Parent = TopAccentLine
 end
 
-local IlIl = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,72,68,66,64,105,68,71,64,73},37), {
+local DragonIcon = New("ImageLabel", {
 	Size=UDim2.fromOffset(0,0), AnchorPoint=Vector2.new(0.5,1),
-	Position=UDim2.new(0.5,0,0,6), Image=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,19,21,22,17,23,16,29,19,29,17},37),
+	Position=UDim2.new(0.5,0,0,6), Image="rbxassetid://6034258684",
 	ImageColor3=CFG.C_GOLD, BackgroundTransparency=1, ZIndex=15,
-}, l1II)
-local IlII = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,72,68,66,64,105,68,71,64,73},37), {
+}, Panel)
+local IconRing = New("ImageLabel", {
 	Size=UDim2.fromOffset(150,150), AnchorPoint=Vector2.new(0.5,1),
-	Position=UDim2.new(0.5,0,0,30), Image=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,19,20,16,22,21,16,23,21,29,18},37),
+	Position=UDim2.new(0.5,0,0,30), Image="rbxassetid://6153052087",
 	ImageColor3=CFG.C_GOLD, ImageTransparency=0.35, BackgroundTransparency=1, ZIndex=14,
-}, l1II)
-local IlI1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,72,68,66,64,105,68,71,64,73},37), {
+}, Panel)
+local IconGlow = New("ImageLabel", {
 	Size=UDim2.fromOffset(180,180), AnchorPoint=Vector2.new(0.5,1),
-	Position=UDim2.new(0.5,0,0,45), Image=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10,19,20,16,22,21,16,23,21,29,18},37),
+	Position=UDim2.new(0.5,0,0,45), Image="rbxassetid://6153052087",
 	ImageColor3=CFG.C_FIRE, ImageTransparency=0.60, BackgroundTransparency=1, ZIndex=13,
-}, l1II)
+}, Panel)
 
-local Il1l = {
-	{ap=Vector2.new(0,0), 1lII=UDim2.fromScale(0,0)},
-	{ap=Vector2.new(1,0), 1lII=UDim2.fromScale(1,0)},
-	{ap=Vector2.new(0,1), 1lII=UDim2.fromScale(0,1)},
-	{ap=Vector2.new(1,1), 1lII=UDim2.fromScale(1,1)},
+local cornerCfgs = {
+	{ap=Vector2.new(0,0), pos=UDim2.fromScale(0,0)},
+	{ap=Vector2.new(1,0), pos=UDim2.fromScale(1,0)},
+	{ap=Vector2.new(0,1), pos=UDim2.fromScale(0,1)},
+	{ap=Vector2.new(1,1), pos=UDim2.fromScale(1,1)},
 }
-for _, cc in ipairs(Il1l) do
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {Size=UDim2.fromOffset(30,3), AnchorPoint=cc.ap, Position=cc.1lII, BackgroundColor3=CFG.C_GOLD, BackgroundTransparency=0, BorderSizePixel=0, ZIndex=15}, l1II)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {Size=UDim2.fromOffset(3,30), AnchorPoint=cc.ap, Position=cc.1lII, BackgroundColor3=CFG.C_GOLD, BackgroundTransparency=0, BorderSizePixel=0, ZIndex=15}, l1II)
-	local Il1I = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {Size=UDim2.fromOffset(8,8), AnchorPoint=cc.ap, Position=cc.1lII, BackgroundColor3=CFG.C_WHITE, BackgroundTransparency=0, BorderSizePixel=0, ZIndex=16}, l1II)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, Il1I)
+for _, cc in ipairs(cornerCfgs) do
+	New("Frame", {Size=UDim2.fromOffset(30,3), AnchorPoint=cc.ap, Position=cc.pos, BackgroundColor3=CFG.C_GOLD, BackgroundTransparency=0, BorderSizePixel=0, ZIndex=15}, Panel)
+	New("Frame", {Size=UDim2.fromOffset(3,30), AnchorPoint=cc.ap, Position=cc.pos, BackgroundColor3=CFG.C_GOLD, BackgroundTransparency=0, BorderSizePixel=0, ZIndex=15}, Panel)
+	local gem = New("Frame", {Size=UDim2.fromOffset(8,8), AnchorPoint=cc.ap, Position=cc.pos, BackgroundColor3=CFG.C_WHITE, BackgroundTransparency=0, BorderSizePixel=0, ZIndex=16}, Panel)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, gem)
 end
 
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+New("Frame", {
 	Size=UDim2.new(0.84,0,0,1), AnchorPoint=Vector2.new(0.5,0),
 	Position=UDim2.new(0.5,0,0,74), BackgroundColor3=CFG.C_GOLD,
 	BackgroundTransparency=0.4, BorderSizePixel=0, ZIndex=11,
-}, l1II)
+}, Panel)
 
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+New("TextLabel", {
 	Size=UDim2.new(1,0,0,72), Position=UDim2.new(0.0025,0,0.195,0),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,119,100,98,106,107,5,5,109,112,103},37), Font=Enum.Font.GothamBold, TextSize=58,
+	Text="DRAGON  HUB", Font=Enum.Font.GothamBold, TextSize=58,
 	TextColor3=Color3.fromRGB(255,50,50), TextTransparency=0.78,
 	BackgroundTransparency=1, TextXAlignment=Enum.TextXAlignment.Center, ZIndex=10,
-}, l1II)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+}, Panel)
+New("TextLabel", {
 	Size=UDim2.new(1,0,0,72), Position=UDim2.new(-0.0025,0,0.195,0),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,119,100,98,106,107,5,5,109,112,103},37), Font=Enum.Font.GothamBold, TextSize=58,
+	Text="DRAGON  HUB", Font=Enum.Font.GothamBold, TextSize=58,
 	TextColor3=CFG.C_CYAN, TextTransparency=0.78,
 	BackgroundTransparency=1, TextXAlignment=Enum.TextXAlignment.Center, ZIndex=10,
-}, l1II)
+}, Panel)
 
-local Il11 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+local TitleA = New("TextLabel", {
 	Size=UDim2.new(1,0,0,72), Position=UDim2.fromScale(0,0.195),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,119,100,98,106,107,5,5,109,112,103},37), Font=Enum.Font.GothamBold, TextSize=58,
+	Text="DRAGON  HUB", Font=Enum.Font.GothamBold, TextSize=58,
 	TextColor3=CFG.C_WHITE, BackgroundTransparency=1,
 	TextXAlignment=Enum.TextXAlignment.Center, ZIndex=12,
-}, l1II)
+}, Panel)
 do
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Color = ColorSequence.new({
+	local g = Instance.new("UIGradient")
+	g.Color = ColorSequence.new({
 		ColorSequenceKeypoint.new(0,CFG.C_GOLD),
 		ColorSequenceKeypoint.new(0.45,CFG.C_WHITE),
 		ColorSequenceKeypoint.new(1,CFG.C_FIRE),
 	})
-	Ill.Rotation=90; Ill.Parent=Il11
+	g.Rotation=90; g.Parent=TitleA
 end
 
-local IIll = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+local TitleGlitch = New("TextLabel", {
 	Size=UDim2.new(1,0,0,72), Position=UDim2.fromScale(0,0.195),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,119,100,98,106,107,5,5,109,112,103},37), Font=Enum.Font.GothamBold, TextSize=58,
+	Text="DRAGON  HUB", Font=Enum.Font.GothamBold, TextSize=58,
 	TextColor3=CFG.C_CYAN, TextTransparency=0.85,
 	BackgroundTransparency=1, TextXAlignment=Enum.TextXAlignment.Center, ZIndex=11,
-}, l1II)
+}, Panel)
 
-local IIlI = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+local TagLine = New("TextLabel", {
 	Size=UDim2.new(1,0,0,22), Position=UDim2.new(0,0,0.472,0),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({105,74,68,65,76,75,66,5,98,87,74,82,5,100,5,98,68,87,65,64,75,5,23},37), Font=Enum.Font.GothamSemibold, TextSize=13,
+	Text="Loading Grow A Garden 2", Font=Enum.Font.GothamSemibold, TextSize=13,
 	TextColor3=CFG.C_GOLD, TextTransparency=0.1,
 	BackgroundTransparency=1, TextXAlignment=Enum.TextXAlignment.Center, ZIndex=12,
-}, l1II)
+}, Panel)
 
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+New("TextLabel", {
 	Size=UDim2.new(1,0,0,18), Position=UDim2.new(0,0,0.582,0),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({107,64,82,5,109,80,71},37), Font=Enum.Font.Gotham, TextSize=11,
+	Text="New Hub", Font=Enum.Font.Gotham, TextSize=11,
 	TextColor3=CFG.C_MUTED, BackgroundTransparency=1,
 	TextXAlignment=Enum.TextXAlignment.Center, ZIndex=12,
-}, l1II)
+}, Panel)
 
-local IIl1  = {}
-local IIIl   = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local EnergyOrbs  = {}
+local energyRow   = New("Frame", {
 	Size=UDim2.new(0.92,0,0,18), AnchorPoint=Vector2.new(0.5,0),
 	Position=UDim2.new(0.5,0,0.668,0), BackgroundTransparency=1, ZIndex=12,
-}, l1II)
-local IIII = {CFG.C_FIRE, CFG.C_EMBER, CFG.C_GOLD, CFG.C_GOLD, CFG.C_CYAN}
+}, Panel)
+local eOrbCols = {CFG.C_FIRE, CFG.C_EMBER, CFG.C_GOLD, CFG.C_GOLD, CFG.C_CYAN}
 for i = 1, 5 do
-	local III1=IIII[i]
-	local II1l = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	local oc=eOrbCols[i]
+	local row = New("Frame", {
 		Size=UDim2.fromOffset(14,14), AnchorPoint=Vector2.new(0.5,0.5),
-		Position=UDim2.new((i-1)*0.22+0.09,0,0.5,0), BackgroundColor3=III1,
+		Position=UDim2.new((i-1)*0.22+0.09,0,0.5,0), BackgroundColor3=oc,
 		BackgroundTransparency=0.85, BorderSizePixel=0, ZIndex=13,
-	}, IIIl)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, II1l)
-	local II1I = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	}, energyRow)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, row)
+	local eg = New("Frame", {
 		Size=UDim2.fromOffset(28,28), AnchorPoint=Vector2.new(0.5,0.5),
-		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=III1,
+		Position=UDim2.fromScale(0.5,0.5), BackgroundColor3=oc,
 		BackgroundTransparency=0.85, BorderSizePixel=0, ZIndex=12,
-	}, II1l)
-	New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, II1I)
-	IIl1[i] = II1l
+	}, row)
+	New("UICorner", {CornerRadius=UDim.new(1,0)}, eg)
+	EnergyOrbs[i] = row
 end
 
-local II11 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local BarTrack = New("Frame", {
 	Size=UDim2.new(0.88,0,0,18), AnchorPoint=Vector2.new(0.5,0),
 	Position=UDim2.new(0.5,0,0.742,0), BackgroundColor3=Color3.fromRGB(8,3,20),
 	BackgroundTransparency=0, BorderSizePixel=0, ZIndex=12,
-}, l1II)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, II11)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,118,81,87,74,78,64},37), {Color=CFG.C_FIRE, Thickness=1.5, Transparency=0.4}, II11)
+}, Panel)
+New("UICorner", {CornerRadius=UDim.new(1,0)}, BarTrack)
+New("UIStroke", {Color=CFG.C_FIRE, Thickness=1.5, Transparency=0.4}, BarTrack)
 
-local I1ll = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local BarFill = New("Frame", {
 	Size=UDim2.fromScale(0,1), BackgroundColor3=CFG.C_FIRE, BorderSizePixel=0, ZIndex=13,
-}, II11)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, I1ll)
+}, BarTrack)
+New("UICorner", {CornerRadius=UDim.new(1,0)}, BarFill)
 do
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Color = ColorSequence.new({
+	local g = Instance.new("UIGradient")
+	g.Color = ColorSequence.new({
 		ColorSequenceKeypoint.new(0,CFG.C_FIRE),
 		ColorSequenceKeypoint.new(0.5,CFG.C_GOLD),
 		ColorSequenceKeypoint.new(1,Color3.fromRGB(255,238,120)),
 	})
-	Ill.Parent = I1ll
+	g.Parent = BarFill
 end
 
-local I1lI = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local Shimmer = New("Frame", {
 	Size=UDim2.fromScale(0.3,1), Position=UDim2.fromScale(-0.3,0),
 	BackgroundColor3=CFG.C_WHITE, BackgroundTransparency=0.48, BorderSizePixel=0, ZIndex=14,
-}, I1ll)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, I1lI)
+}, BarFill)
+New("UICorner", {CornerRadius=UDim.new(1,0)}, Shimmer)
 do
-	local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	Ill.Transparency = NumberSequence.new({
+	local g = Instance.new("UIGradient")
+	g.Transparency = NumberSequence.new({
 		NumberSequenceKeypoint.new(0,1), NumberSequenceKeypoint.new(0.5,0.22), NumberSequenceKeypoint.new(1,1),
 	})
-	Ill.Parent = I1lI
+	g.Parent = Shimmer
 end
 
-local I1l1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+local BarTip = New("Frame", {
 	Size=UDim2.fromOffset(14,18), AnchorPoint=Vector2.new(1,0.5),
 	Position=UDim2.new(1,3,0.5,0), BackgroundColor3=Color3.fromRGB(255,248,175),
 	BackgroundTransparency=0.08, BorderSizePixel=0, ZIndex=15,
-}, I1ll)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37), {CornerRadius=UDim.new(1,0)}, I1l1)
+}, BarFill)
+New("UICorner", {CornerRadius=UDim.new(1,0)}, BarTip)
 
-local I1Il = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+local PctLbl = New("TextLabel", {
 	Size=UDim2.new(1,0,0,22), Position=UDim2.new(0,0,0.855,0),
 	Text="0%", Font=Enum.Font.GothamBold, TextSize=15,
 	TextColor3=CFG.C_GOLD, BackgroundTransparency=1,
 	TextXAlignment=Enum.TextXAlignment.Center, ZIndex=12,
-}, l1II)
+}, Panel)
 
-local I1II = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+local StatusLbl = New("TextLabel", {
 	Size=UDim2.new(1,0,0,18), Position=UDim2.new(0,0,0.928,0),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({100,82,68,78,64,75,76,75,66,5,81,77,64,5,65,87,68,66,74,75,11,11,11},37), Font=Enum.Font.Gotham, TextSize=12,
+	Text="Awakening the dragon...", Font=Enum.Font.Gotham, TextSize=12,
 	TextColor3=CFG.C_MUTED, BackgroundTransparency=1,
 	TextXAlignment=Enum.TextXAlignment.Center, ZIndex=12,
-}, l1II)
+}, Panel)
 
-
-local I1I1 = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+-- ── Bottom Ticker ─────────────────────────────────────────────
+local TickerBar = New("Frame", {
 	Size=UDim2.new(1,0,0,34), AnchorPoint=Vector2.new(0,1),
 	Position=UDim2.fromScale(0,1), BackgroundColor3=Color3.new(0,0,0),
 	BackgroundTransparency=0.38, BorderSizePixel=0, ZIndex=20,
-}, l1l)
-New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+}, Base)
+New("Frame", {
 	Size=UDim2.new(1,0,0,1), BackgroundColor3=CFG.C_GOLD,
 	BackgroundTransparency=0.45, BorderSizePixel=0, ZIndex=21,
-}, I1I1)
-local I11l = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37), {
+}, TickerBar)
+local TickerText = New("TextLabel", {
 	Size=UDim2.fromScale(2.5,1), Position=UDim2.fromScale(0,0),
-	Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({5,5,113,77,76,86,5,118,70,87,76,85,81,5,108,86,5,113,77,64,5,71,64,86,81,5,55323,56677,55323,56677,5},37),
+	Text="  This Script Is The best 🥀🥀 ",
 	Font=Enum.Font.GothamSemibold, TextSize=12,
 	TextColor3=CFG.C_MUTED, BackgroundTransparency=1,
 	TextXAlignment=Enum.TextXAlignment.Left, ZIndex=21,
-}, I1I1)
+}, TickerBar)
 
-local I11I = {
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({98,87,74,82,5,100,5,98,68,87,65,64,75},37),
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({105,74,68,65,76,75,66,5,99,64,68,81,80,64,86},37),
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({104,74,65,80,73,64,86,11,11,11},37),
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({105,74,70,68,73,5,118,70,87,76,85,81,86,11,11},37),
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({100,73,72,74,86,81,5,97,74,75,64,11,11,11},37),
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({100,73,73,5,103,92,85,68,86,86,64,86,11,11,11},37),
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({109,68,87,83,64,86,81,5,108,75,86,81,68,75,81,5,85,87,74,72,85,81,11,11,11},37),
-	(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,92,86,81,64,72,86,5,74,75,73,76,75,64,5,8241,5,119,96,100,97,124,4},37),
+-- ═══════════════════════════════════════════════════════════
+-- STATUS MESSAGES
+-- ═══════════════════════════════════════════════════════════
+local STATUSES = {
+	"Grow A Garden",
+	"Loading Featues",
+	"Modules...",
+	"Local Scripts..",
+	"Almost Done...",
+	"All Bypasses...",
+	"Harvest Instant prompt...",
+	"Systems online — READY!",
 }
 local function SetStatus(msg)
-	if not alive or not I1II or not I1II.Parent then return end
-	I1II.TextTransparency = 1
-	I1II.Text = msg
-	Tween(I1II, 0.4, nil, nil, {TextTransparency=0})
+	if not alive or not StatusLbl or not StatusLbl.Parent then return end
+	StatusLbl.TextTransparency = 1
+	StatusLbl.Text = msg
+	Tween(StatusLbl, 0.4, nil, nil, {TextTransparency=0})
 end
 
-l1l.BackgroundTransparency  = 1
-l1I.ImageTransparency      = 1
-l1II.BackgroundTransparency = 1
-l11l.BackgroundTransparency  = 1
-l11I.BackgroundTransparency = 1
-ll1l.Position       = UDim2.fromScale(0.5, 0.58)
+-- ═══════════════════════════════════════════════════════════
+-- ENTRANCE ANIMATIONS
+-- ═══════════════════════════════════════════════════════════
+Base.BackgroundTransparency  = 1
+BgImg.ImageTransparency      = 1
+Panel.BackgroundTransparency = 1
+Halo.BackgroundTransparency  = 1
+Halo2.BackgroundTransparency = 1
+RingContainer.Position       = UDim2.fromScale(0.5, 0.58)
 
 task.spawn(function()
-	Tween(l1l,  0.7, nil, nil, {BackgroundTransparency=0})
-	Tween(l1I, 1.2, nil, nil, {ImageTransparency=0.35})
+	Tween(Base,  0.7, nil, nil, {BackgroundTransparency=0})
+	Tween(BgImg, 1.2, nil, nil, {ImageTransparency=0.35})
 	task.wait(0.45)
 	if not alive then return end
-	Tween(l1II, 0.85, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {
+	Tween(Panel, 0.85, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {
 		Position=UDim2.fromScale(0.5,0.47), BackgroundTransparency=0.2,
 	})
-	Tween(l11l,  0.85, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {BackgroundTransparency=0.87})
-	Tween(l11I, 0.85, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {BackgroundTransparency=0.95})
-	Tween(ll1l, 1.0, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {Position=UDim2.fromScale(0.5,0.47)})
+	Tween(Halo,  0.85, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {BackgroundTransparency=0.87})
+	Tween(Halo2, 0.85, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {BackgroundTransparency=0.95})
+	Tween(RingContainer, 1.0, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {Position=UDim2.fromScale(0.5,0.47)})
 	task.wait(0.25)
 	if not alive then return end
-	Tween(IlIl, 0.55, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {Size=UDim2.fromOffset(108,108)})
+	Tween(DragonIcon, 0.55, Enum.EasingStyle.Back, Enum.EasingDirection.Out, {Size=UDim2.fromOffset(108,108)})
 end)
 
+-- ═══════════════════════════════════════════════════════════
+-- ANIMATION LOOPS
+-- ═══════════════════════════════════════════════════════════
 Loop(function()
-	Sine(Il11, 2.4, {TextTransparency=0.1}); task.wait(2.4)
+	Sine(TitleA, 2.4, {TextTransparency=0.1}); task.wait(2.4)
 	if not alive then return end
-	Sine(Il11, 2.4, {TextTransparency=0}); task.wait(2.4)
+	Sine(TitleA, 2.4, {TextTransparency=0}); task.wait(2.4)
 end)
 Loop(function()
 	task.wait(0.06+math.random()*0.1)
 	if not alive then return end
-	if IIll and IIll.Parent then
-		IIll.Position = UDim2.new(math.random()*0.008-0.004,0,0.195,0)
-		IIll.TextTransparency = 0.5+math.random()*0.4
+	if TitleGlitch and TitleGlitch.Parent then
+		TitleGlitch.Position = UDim2.new(math.random()*0.008-0.004,0,0.195,0)
+		TitleGlitch.TextTransparency = 0.5+math.random()*0.4
 	end
 	task.wait(0.04)
-	if not alive or not IIll or not IIll.Parent then return end
-	IIll.Position = UDim2.fromScale(0,0.195)
-	IIll.TextTransparency = 0.85
+	if not alive or not TitleGlitch or not TitleGlitch.Parent then return end
+	TitleGlitch.Position = UDim2.fromScale(0,0.195)
+	TitleGlitch.TextTransparency = 0.85
 	task.wait(1.5+math.random()*3.5)
 end)
 Loop(function()
-	Sine(IlIl, 1.9, {Position=UDim2.new(0.5,0,0,-14)})
-	Sine(IlII,   1.9, {ImageTransparency=0.18, Size=UDim2.fromOffset(160,160)})
-	Sine(IlI1,   1.9, {ImageTransparency=0.40})
+	Sine(DragonIcon, 1.9, {Position=UDim2.new(0.5,0,0,-14)})
+	Sine(IconRing,   1.9, {ImageTransparency=0.18, Size=UDim2.fromOffset(160,160)})
+	Sine(IconGlow,   1.9, {ImageTransparency=0.40})
 	task.wait(1.9)
 	if not alive then return end
-	Sine(IlIl, 1.9, {Position=UDim2.new(0.5,0,0,4)})
-	Sine(IlII,   1.9, {ImageTransparency=0.48, Size=UDim2.fromOffset(150,150)})
-	Sine(IlI1,   1.9, {ImageTransparency=0.65})
+	Sine(DragonIcon, 1.9, {Position=UDim2.new(0.5,0,0,4)})
+	Sine(IconRing,   1.9, {ImageTransparency=0.48, Size=UDim2.fromOffset(150,150)})
+	Sine(IconGlow,   1.9, {ImageTransparency=0.65})
 	task.wait(1.9)
 end)
 Loop(function()
-	Sine(l1I1, 1.1, {Transparency=0.0, Color=CFG.C_GOLD}); task.wait(1.1)
+	Sine(Stroke1, 1.1, {Transparency=0.0, Color=CFG.C_GOLD}); task.wait(1.1)
 	if not alive then return end
-	Sine(l1I1, 1.1, {Transparency=0.45, Color=CFG.C_FIRE}); task.wait(1.1)
+	Sine(Stroke1, 1.1, {Transparency=0.45, Color=CFG.C_FIRE}); task.wait(1.1)
 end)
 Loop(function()
-	Sine(l11l,  2.4, {BackgroundTransparency=0.80})
-	Sine(l11I, 3.2, {BackgroundTransparency=0.91})
+	Sine(Halo,  2.4, {BackgroundTransparency=0.80})
+	Sine(Halo2, 3.2, {BackgroundTransparency=0.91})
 	task.wait(2.4)
 	if not alive then return end
-	Sine(l11l,  2.4, {BackgroundTransparency=0.93})
-	Sine(l11I, 3.2, {BackgroundTransparency=0.97})
+	Sine(Halo,  2.4, {BackgroundTransparency=0.93})
+	Sine(Halo2, 3.2, {BackgroundTransparency=0.97})
 	task.wait(2.4)
 end)
 Loop(function()
-	Sine(l111, 2.8, {BackgroundTransparency=0.78}); task.wait(2.8)
+	Sine(InnerGlow, 2.8, {BackgroundTransparency=0.78}); task.wait(2.8)
 	if not alive then return end
-	Sine(l111, 2.8, {BackgroundTransparency=0.92}); task.wait(2.8)
+	Sine(InnerGlow, 2.8, {BackgroundTransparency=0.92}); task.wait(2.8)
 end)
 Loop(function()
-	for _, grd in ipairs(Il1) do
+	for _, grd in ipairs(godRays) do
 		if alive and grd.ray and grd.ray.Parent then
-			local I111 = grd.baseTr+math.sin(tick()*0.5+grd.phase)*0.04
-			Sine(grd.ray, 1.2+math.random(), {BackgroundTransparency=math.clamp(I111,0.78,0.97)})
+			local wave = grd.baseTr+math.sin(tick()*0.5+grd.phase)*0.04
+			Sine(grd.ray, 1.2+math.random(), {BackgroundTransparency=math.clamp(wave,0.78,0.97)})
 		end
 	end
 	task.wait(0.9+math.random()*0.8)
 end)
 Loop(function()
-	if I1lI and I1lI.Parent then
-		I1lI.Position = UDim2.fromScale(-0.3,0)
-		Lin(I1lI, 1.6, {Position=UDim2.fromScale(1.1,0)})
+	if Shimmer and Shimmer.Parent then
+		Shimmer.Position = UDim2.fromScale(-0.3,0)
+		Lin(Shimmer, 1.6, {Position=UDim2.fromScale(1.1,0)})
 	end
 	task.wait(2.8)
 end)
 Loop(function()
-	if Illl and Illl.Parent then
-		Illl.Position = UDim2.fromScale(-0.5,0.5)
-		Lin(Illl, 2.2, {Position=UDim2.fromScale(1.5,0.5)})
+	if PanelShimmer and PanelShimmer.Parent then
+		PanelShimmer.Position = UDim2.fromScale(-0.5,0.5)
+		Lin(PanelShimmer, 2.2, {Position=UDim2.fromScale(1.5,0.5)})
 	end
 	task.wait(7+math.random()*5)
 end)
 Loop(function()
-	Sine(IllI, 0.9, {BackgroundTransparency=0}); task.wait(0.9)
+	Sine(AccentLine, 0.9, {BackgroundTransparency=0}); task.wait(0.9)
 	if not alive then return end
-	Sine(IllI, 0.9, {BackgroundTransparency=0.55}); task.wait(0.9)
+	Sine(AccentLine, 0.9, {BackgroundTransparency=0.55}); task.wait(0.9)
 end)
 Loop(function()
-	Sine(IIlI, 1.7, {TextTransparency=0.45}); task.wait(1.7)
+	Sine(TagLine, 1.7, {TextTransparency=0.45}); task.wait(1.7)
 	if not alive then return end
-	Sine(IIlI, 1.7, {TextTransparency=0}); task.wait(1.7)
+	Sine(TagLine, 1.7, {TextTransparency=0}); task.wait(1.7)
 end)
 Loop(function()
-	local 1lll=(math.random()-0.5)*0.03; local 1llI=(math.random()-0.5)*0.02
-	Sine(l1I, 18, {Size=UDim2.fromScale(1.1,1.1), Position=UDim2.fromScale(-0.05+1lll,-0.05+1llI)})
+	local dx=(math.random()-0.5)*0.03; local dy=(math.random()-0.5)*0.02
+	Sine(BgImg, 18, {Size=UDim2.fromScale(1.1,1.1), Position=UDim2.fromScale(-0.05+dx,-0.05+dy)})
 	task.wait(18)
 	if not alive then return end
-	Sine(l1I, 18, {Size=UDim2.fromScale(1,1), Position=UDim2.fromScale(0,0)}); task.wait(18)
+	Sine(BgImg, 18, {Size=UDim2.fromScale(1,1), Position=UDim2.fromScale(0,0)}); task.wait(18)
 end)
 
 task.spawn(function()
-	local 1ll1=1100; local 1lIl=70; local 1lII=0
+	local totalW=1100; local speed=70; local pos=0
 	while alive do
-		local 1lI1=RunService.Heartbeat:Wait(); 1lII=1lII-1lIl*1lI1
-		if 1lII < -1ll1 then 1lII=0 end
-		if I11l and I11l.Parent then I11l.Position=UDim2.fromOffset(1lII,0) end
+		local dt=RunService.Heartbeat:Wait(); pos=pos-speed*dt
+		if pos < -totalW then pos=0 end
+		if TickerText and TickerText.Parent then TickerText.Position=UDim2.fromOffset(pos,0) end
 	end
 end)
 
-for _, _x185 in ipairs(lllI) do
+for _, d in ipairs(flames) do
 	task.spawn(function()
-		task.wait(_x185.delay)
+		task.wait(d.delay)
 		while alive do
-			if _x185.f and _x185.f.Parent then
-				_x185.f.Position=UDim2.new(-0.05,0,_x185.llIl,0); _x185.f.Size=UDim2.new(0,0,0,_x185.llII)
-				Tween(_x185.f, 2.5+math.random()*2.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In, {
-					Size=UDim2.new(math.random(25,85)/100,0,0,_x185.llII), Position=UDim2.new(1.1,0,_x185.llIl,0),
+			if d.f and d.f.Parent then
+				d.f.Position=UDim2.new(-0.05,0,d.yp,0); d.f.Size=UDim2.new(0,0,0,d.h)
+				Tween(d.f, 2.5+math.random()*2.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In, {
+					Size=UDim2.new(math.random(25,85)/100,0,0,d.h), Position=UDim2.new(1.1,0,d.yp,0),
 				})
 			end
 			task.wait(3+math.random()*3.5)
@@ -665,112 +695,118 @@ for _, _x185 in ipairs(lllI) do
 	end)
 end
 
-
-local 1l1l=0; local 1l1I=0
+-- ── RunService Update ─────────────────────────────────────────
+local orbAngle=0; local ringAngle=0
 task.spawn(function()
 	while alive do
-		local 1lI1=RunService.Heartbeat:Wait()
-		for _, 11I in ipairs(1Il) do
-			11I.y=11I.y-11I.spd*1lI1*60/60; 11I._x177=11I._x177+11I.1lll
-			if 11I.y < -0.08 then 11I.y=1.05+math.random()*0.4; 11I._x177=math.random() end
-			if 11I.f and 11I.f.Parent then 11I.f.Position=UDim2.fromScale(11I._x177,11I.y) end
+		local dt=RunService.Heartbeat:Wait()
+		for _, sp in ipairs(sparks) do
+			sp.y=sp.y-sp.spd*dt*60/60; sp.x=sp.x+sp.dx
+			if sp.y < -0.08 then sp.y=1.05+math.random()*0.4; sp.x=math.random() end
+			if sp.f and sp.f.Parent then sp.f.Position=UDim2.fromScale(sp.x,sp.y) end
 		end
-		1l1l=1l1l+1lI1*1.3
-		for _, od in ipairs(lI1l) do
-			local 1l11=1l1l+od.offset
-			local lIll=math.cos(1l11)*ll1I; local lIlI=math.sin(1l11)*ll1I
-			table.insert(od.history,1,{lIll=lIll,lIlI=lIlI})
-			if #od.history > #od.lI11+2 then table.remove(od.history) end
-			if od.l1l1  and od.l1l1.Parent  then od.l1l1.Position=UDim2.new(0.5,lIll-9,0.5,lIlI-9) end
-			if od.glow and od.glow.Parent then od.glow.Position=UDim2.new(0.5,lIll-20,0.5,lIlI-20) end
-			for ti, tf in ipairs(od.lI11) do
-				local 1Ill=od.history[ti+1]
-				if 1Ill and tf and tf.Parent then
-					local 1IlI=math.max(1,(8-ti))
-					tf.Position=UDim2.new(0.5,1Ill.lIll-1IlI/2,0.5,1Ill.lIlI-1IlI/2)
+		orbAngle=orbAngle+dt*1.3
+		for _, od in ipairs(orbs) do
+			local a=orbAngle+od.offset
+			local cx=math.cos(a)*RING_R; local cy=math.sin(a)*RING_R
+			table.insert(od.history,1,{cx=cx,cy=cy})
+			if #od.history > #od.trail+2 then table.remove(od.history) end
+			if od.orb  and od.orb.Parent  then od.orb.Position=UDim2.new(0.5,cx-9,0.5,cy-9) end
+			if od.glow and od.glow.Parent then od.glow.Position=UDim2.new(0.5,cx-20,0.5,cy-20) end
+			for ti, tf in ipairs(od.trail) do
+				local hist=od.history[ti+1]
+				if hist and tf and tf.Parent then
+					local hs=math.max(1,(8-ti))
+					tf.Position=UDim2.new(0.5,hist.cx-hs/2,0.5,hist.cy-hs/2)
 				end
 			end
 		end
-		1l1I=1l1I+1lI1*9
-		if ll1l and ll1l.Parent then ll1l.Rotation=1l1I end
+		ringAngle=ringAngle+dt*9
+		if RingContainer and RingContainer.Parent then RingContainer.Rotation=ringAngle end
 	end
 end)
 
+-- ═══════════════════════════════════════════════════════════
+-- LOADING PROGRESS
+-- ═══════════════════════════════════════════════════════════
 local function RunLoadProgress()
 	if CFG.LOADING_TIME == 0 then
-		local 1Il1=false
+		local loadDone=false
 		task.spawn(function()
 			if not game:IsLoaded() then game.Loaded:Wait() end
-			pcall(function() ContentProvider:PreloadAsync({l1I}) end)
-			1Il1=true
+			pcall(function() ContentProvider:PreloadAsync({BgImg}) end)
+			loadDone=true
 		end)
-		local 1IIl=0; local 1III=8
-		while alive and not 1Il1 do
-			local 1lI1=RunService.Heartbeat:Wait(); 1IIl=1IIl+1lI1
-			local 1II1=math.clamp(1IIl/1III,0,0.9)
-			if I1ll and I1ll.Parent then Lin(I1ll,0.12,{Size=UDim2.fromScale(1II1,1)}) end
-			if I1Il  and I1Il.Parent  then I1Il.Text=math.floor(1II1*100).."%" end
+		local elapsed=0; local fakeMax=8
+		while alive and not loadDone do
+			local dt=RunService.Heartbeat:Wait(); elapsed=elapsed+dt
+			local pct=math.clamp(elapsed/fakeMax,0,0.9)
+			if BarFill and BarFill.Parent then Lin(BarFill,0.12,{Size=UDim2.fromScale(pct,1)}) end
+			if PctLbl  and PctLbl.Parent  then PctLbl.Text=math.floor(pct*100).."%" end
 		end
 		if alive then
-			if I1ll and I1ll.Parent then Lin(I1ll,0.5,{Size=UDim2.fromScale(1,1)}) end
-			if I1Il  and I1Il.Parent  then I1Il.Text="100%" end
+			if BarFill and BarFill.Parent then Lin(BarFill,0.5,{Size=UDim2.fromScale(1,1)}) end
+			if PctLbl  and PctLbl.Parent  then PctLbl.Text="100%" end
 		end
 	else
-		local 1I1l=math.max(CFG.LOADING_TIME,0.5)
-		local 1I1I=tick(); local 1I11=1; local 11ll=1I1I; local 11lI=1I1l/#I11I
+		local total=math.max(CFG.LOADING_TIME,0.5)
+		local start=tick(); local msgIdx=1; local lastMsg=start; local msgGap=total/#STATUSES
 		while alive do
-			local 1IIl=tick()-1I1I; local 1II1=math.clamp(1IIl/1I1l,0,1)
-			if I1ll and I1ll.Parent then Lin(I1ll,0.12,{Size=UDim2.fromScale(1II1,1)}) end
-			if I1Il  and I1Il.Parent  then I1Il.Text=math.floor(1II1*100).."%" end
-			local 11l1=math.floor(1II1*#IIl1)
-			for idx, eo in ipairs(IIl1) do
-				if eo and eo.Parent then Sine(eo,0.4,{BackgroundTransparency=idx<=11l1 and 0 or 0.85}) end
+			local elapsed=tick()-start; local pct=math.clamp(elapsed/total,0,1)
+			if BarFill and BarFill.Parent then Lin(BarFill,0.12,{Size=UDim2.fromScale(pct,1)}) end
+			if PctLbl  and PctLbl.Parent  then PctLbl.Text=math.floor(pct*100).."%" end
+			local lit=math.floor(pct*#EnergyOrbs)
+			for idx, eo in ipairs(EnergyOrbs) do
+				if eo and eo.Parent then Sine(eo,0.4,{BackgroundTransparency=idx<=lit and 0 or 0.85}) end
 			end
-			if tick()-11ll > 11lI then
-				11ll=tick(); 1I11=math.min(1I11+1,#I11I)
-				SetStatus(I11I[1I11])
+			if tick()-lastMsg > msgGap then
+				lastMsg=tick(); msgIdx=math.min(msgIdx+1,#STATUSES)
+				SetStatus(STATUSES[msgIdx])
 			end
-			if 1II1 >= 1 then break end
+			if pct >= 1 then break end
 			task.wait(0.05)
 		end
 	end
 end
 
+-- ═══════════════════════════════════════════════════════════
+-- BURN EXIT SEQUENCE
+-- ═══════════════════════════════════════════════════════════
 local function PlayBurnExit()
 	alive=false; task.wait(0.05)
-	if I1Il  and I1Il.Parent  then I1Il.Text="100%" end
-	if I1II and I1II.Parent then
-		I1II.TextTransparency=0; I1II.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,92,86,81,64,72,86,5,74,75,73,76,75,64,5,8241,5,119,96,100,97,124,4},37)
+	if PctLbl  and PctLbl.Parent  then PctLbl.Text="100%" end
+	if StatusLbl and StatusLbl.Parent then
+		StatusLbl.TextTransparency=0; StatusLbl.Text="Systems online — READY!"
 	end
-	for _, eo in ipairs(IIl1) do
+	for _, eo in ipairs(EnergyOrbs) do
 		if eo and eo.Parent then CloseTween(eo,0.22,nil,nil,{BackgroundTransparency=0,Size=UDim2.fromOffset(20,20)}) end
 	end
-	pcall(function() lIl:Play() end)
+	pcall(function() SukunaSound:Play() end)
 	task.wait(1.8)
 	for _ = 1, 22 do
-		if IIll and IIll.Parent then
-			IIll.Position=UDim2.new((math.random()-0.5)*0.024,0,0.195,0)
-			IIll.TextTransparency=math.random()*0.55
+		if TitleGlitch and TitleGlitch.Parent then
+			TitleGlitch.Position=UDim2.new((math.random()-0.5)*0.024,0,0.195,0)
+			TitleGlitch.TextTransparency=math.random()*0.55
 		end
-		if Il11 and Il11.Parent then Il11.TextTransparency=math.random()*0.45 end
+		if TitleA and TitleA.Parent then TitleA.TextTransparency=math.random()*0.45 end
 		task.wait(0.048)
 	end
-	if Il11      and Il11.Parent      then Il11.TextTransparency=0 end
-	if IIll and IIll.Parent then
-		IIll.Position=UDim2.fromScale(0,0.195); IIll.TextTransparency=0.85
+	if TitleA      and TitleA.Parent      then TitleA.TextTransparency=0 end
+	if TitleGlitch and TitleGlitch.Parent then
+		TitleGlitch.Position=UDim2.fromScale(0,0.195); TitleGlitch.TextTransparency=0.85
 	end
-	pcall(function() lII:Play() end)
-	local 11Il = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	pcall(function() BurnSound:Play() end)
+	local BlackOut = New("Frame", {
 		Size=UDim2.fromScale(1,1), BackgroundColor3=Color3.new(0,0,0),
 		BackgroundTransparency=0, BorderSizePixel=0, ZIndex=440,
-	}, lI1)
-	local 11II = New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37), {
+	}, Gui)
+	local FireWipe = New("Frame", {
 		Size=UDim2.new(1,0,2.8,0), AnchorPoint=Vector2.new(0,0),
 		Position=UDim2.fromScale(0,1), BackgroundColor3=Color3.new(0,0,0),
 		BackgroundTransparency=0, BorderSizePixel=0, ZIndex=450,
-	}, lI1)
-	local 11I1=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	11I1.Color=ColorSequence.new({
+	}, Gui)
+	local wipeGrad=Instance.new("UIGradient")
+	wipeGrad.Color=ColorSequence.new({
 		ColorSequenceKeypoint.new(0,    Color3.fromRGB(255,255,220)),
 		ColorSequenceKeypoint.new(0.03, Color3.fromRGB(255,240,70)),
 		ColorSequenceKeypoint.new(0.09, Color3.fromRGB(255,100,5)),
@@ -779,420 +815,423 @@ local function PlayBurnExit()
 		ColorSequenceKeypoint.new(0.44, Color3.fromRGB(8,1,0)),
 		ColorSequenceKeypoint.new(1,    Color3.new(0,0,0)),
 	})
-	11I1.Transparency=NumberSequence.new({
+	wipeGrad.Transparency=NumberSequence.new({
 		NumberSequenceKeypoint.new(0,0.65), NumberSequenceKeypoint.new(0.02,0), NumberSequenceKeypoint.new(1,0),
 	})
-	11I1.Rotation=90; 11I1.Parent=11II
+	wipeGrad.Rotation=90; wipeGrad.Parent=FireWipe
 	for _, side in ipairs({{0,Vector2.new(0,0)},{1,Vector2.new(1,0)}}) do
-		local 111l=New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37),{Size=UDim2.new(0,90,1,0),AnchorPoint=side[2],Position=UDim2.fromScale(side[1],0),BackgroundColor3=CFG.C_FIRE,BackgroundTransparency=0,ZIndex=451},11II)
-		local II1I=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-		II1I.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,0.35),NumberSequenceKeypoint.new(1,1)})
-		II1I.Rotation=(side[1]==0) and 0 or 180; II1I.Parent=111l
+		local ef=New("Frame",{Size=UDim2.new(0,90,1,0),AnchorPoint=side[2],Position=UDim2.fromScale(side[1],0),BackgroundColor3=CFG.C_FIRE,BackgroundTransparency=0,ZIndex=451},FireWipe)
+		local eg=Instance.new("UIGradient")
+		eg.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,0.35),NumberSequenceKeypoint.new(1,1)})
+		eg.Rotation=(side[1]==0) and 0 or 180; eg.Parent=ef
 	end
-	local 111I=true; local 1111=7
+	local shakeOn=true; local shakeMag=7
 	task.spawn(function()
-		while 111I do
+		while shakeOn do
 			RunService.Heartbeat:Wait()
-			if l1l and l1l.Parent then
-				l1l.Position=UDim2.fromOffset((math.random()-0.5)*1111*2,(math.random()-0.5)*1111*2)
+			if Base and Base.Parent then
+				Base.Position=UDim2.fromOffset((math.random()-0.5)*shakeMag*2,(math.random()-0.5)*shakeMag*2)
 			end
 		end
-		if l1l and l1l.Parent then l1l.Position=UDim2.fromOffset(0,0) end
+		if Base and Base.Parent then Base.Position=UDim2.fromOffset(0,0) end
 	end)
 	task.spawn(function()
-		local _x109={CFG.C_FIRE,CFG.C_GOLD,CFG.C_EMBER,Color3.fromRGB(255,252,100)}
+		local burstCols={CFG.C_FIRE,CFG.C_GOLD,CFG.C_EMBER,Color3.fromRGB(255,252,100)}
 		for bi = 1, 110 do
-			local _x110=math.random(); local _x111=math.random(5,18); local _x112=_x109[math.random(1,4)]
-			local _x113=New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37),{Size=UDim2.fromOffset(_x111,_x111),Position=UDim2.fromScale(_x110,1.0),BackgroundColor3=_x112,BackgroundTransparency=0,BorderSizePixel=0,ZIndex=460},lI1)
-			New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37),{CornerRadius=UDim.new(1,0)},_x113)
-			CloseTween(_x113,1.0+math.random()*1.8,Enum.EasingStyle.Quad,Enum.EasingDirection.Out,{
-				Position=UDim2.fromScale(_x110+(math.random()-0.5)*0.35,-0.05-math.random()*0.5),
-				BackgroundTransparency=1, Size=UDim2.fromOffset(math.max(1,_x111*0.4),math.max(1,_x111*0.4)),
+			local bx=math.random(); local bsz=math.random(5,18); local bc=burstCols[math.random(1,4)]
+			local bp=New("Frame",{Size=UDim2.fromOffset(bsz,bsz),Position=UDim2.fromScale(bx,1.0),BackgroundColor3=bc,BackgroundTransparency=0,BorderSizePixel=0,ZIndex=460},Gui)
+			New("UICorner",{CornerRadius=UDim.new(1,0)},bp)
+			CloseTween(bp,1.0+math.random()*1.8,Enum.EasingStyle.Quad,Enum.EasingDirection.Out,{
+				Position=UDim2.fromScale(bx+(math.random()-0.5)*0.35,-0.05-math.random()*0.5),
+				BackgroundTransparency=1, Size=UDim2.fromOffset(math.max(1,bsz*0.4),math.max(1,bsz*0.4)),
 			})
 			task.wait(0.011)
 		end
 	end)
-	local _x114=3.0
-	CloseTween(11II,_x114,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut,{Position=UDim2.fromScale(0,-2.8)})
-	task.wait(_x114*0.38)
-	CloseTween(l1II,0.7,Enum.EasingStyle.Quad,Enum.EasingDirection.In,{BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.42)})
-	CloseTween(l11l, 0.6,nil,nil,{BackgroundTransparency=1})
-	CloseTween(l11I,0.6,nil,nil,{BackgroundTransparency=1})
-	task.wait(_x114*0.62)
-	111I=false
-	local _x115=New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37),{Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.fromRGB(255,190,50),BackgroundTransparency=0.22,BorderSizePixel=0,ZIndex=490},lI1)
-	CloseTween(_x115,0.9,Enum.EasingStyle.Quad,Enum.EasingDirection.Out,{BackgroundTransparency=1})
-	local _x116=New((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37),{Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.fromRGB(90,12,0),BackgroundTransparency=0.25,BorderSizePixel=0,ZIndex=470},lI1)
-	CloseTween(_x116,2.0,Enum.EasingStyle.Quad,Enum.EasingDirection.Out,{BackgroundTransparency=1})
+	local wipeDur=3.0
+	CloseTween(FireWipe,wipeDur,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut,{Position=UDim2.fromScale(0,-2.8)})
+	task.wait(wipeDur*0.38)
+	CloseTween(Panel,0.7,Enum.EasingStyle.Quad,Enum.EasingDirection.In,{BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.42)})
+	CloseTween(Halo, 0.6,nil,nil,{BackgroundTransparency=1})
+	CloseTween(Halo2,0.6,nil,nil,{BackgroundTransparency=1})
+	task.wait(wipeDur*0.62)
+	shakeOn=false
+	local Flash=New("Frame",{Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.fromRGB(255,190,50),BackgroundTransparency=0.22,BorderSizePixel=0,ZIndex=490},Gui)
+	CloseTween(Flash,0.9,Enum.EasingStyle.Quad,Enum.EasingDirection.Out,{BackgroundTransparency=1})
+	local EmberGlow=New("Frame",{Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.fromRGB(90,12,0),BackgroundTransparency=0.25,BorderSizePixel=0,ZIndex=470},Gui)
+	CloseTween(EmberGlow,2.0,Enum.EasingStyle.Quad,Enum.EasingDirection.Out,{BackgroundTransparency=1})
 	task.wait(1.2)
-	CloseTween(11Il,1.3,Enum.EasingStyle.Sine,Enum.EasingDirection.Out,{BackgroundTransparency=1})
-	CloseTween(l1l,    1.3,Enum.EasingStyle.Sine,Enum.EasingDirection.Out,{BackgroundTransparency=1})
+	CloseTween(BlackOut,1.3,Enum.EasingStyle.Sine,Enum.EasingDirection.Out,{BackgroundTransparency=1})
+	CloseTween(Base,    1.3,Enum.EasingStyle.Sine,Enum.EasingDirection.Out,{BackgroundTransparency=1})
 	task.wait(1.4)
-	pcall(function() lIl:Destroy() end)
-	pcall(function() lII:Destroy() end)
-	if lI1 and lI1.Parent then lI1:Destroy() end
+	pcall(function() SukunaSound:Destroy() end)
+	pcall(function() BurnSound:Destroy() end)
+	if Gui and Gui.Parent then Gui:Destroy() end
 end
 
+-- ═══════════════════════════════════════════════════════════
+-- KEY SYSTEM  (runs after burn exit completes)
+-- ═══════════════════════════════════════════════════════════
 local function LaunchKeySystem()
-
-	if playerGui:FindFirstChild((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,87,68,66,74,75,109,80,71},37)) then
-		playerGui:FindFirstChild((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,87,68,66,74,75,109,80,71},37)):Destroy()
+	-- Clean up any old instance
+	if playerGui:FindFirstChild("DragonHub") then
+		playerGui:FindFirstChild("DragonHub"):Destroy()
 	end
 
-	local _x117 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,70,87,64,64,75,98,80,76},37))
-	_x117.Name           = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,87,68,66,74,75,109,80,71},37)
-	_x117.ResetOnSpawn   = false
-	_x117.ZIndexBehavior  = Enum.ZIndexBehavior.Sibling
-	_x117.DisplayOrder   = 999
-	_x117.IgnoreGuiInset = true
-	_x117.Parent         = playerGui
+	local ScreenGui = Instance.new("ScreenGui")
+	ScreenGui.Name           = "DragonHub"
+	ScreenGui.ResetOnSpawn   = false
+	ScreenGui.ZIndexBehavior  = Enum.ZIndexBehavior.Sibling
+	ScreenGui.DisplayOrder   = 999
+	ScreenGui.IgnoreGuiInset = true
+	ScreenGui.Parent         = playerGui
 
-	local _x118 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x118.Size = UDim2.new(1,0,1,0)
-	_x118.BackgroundColor3 = Color3.fromRGB(0,0,0)
-	_x118.BackgroundTransparency = 0.5
-	_x118.BorderSizePixel = 0
-	_x118.ZIndex = 1
-	_x118.Parent = _x117
+	local Blur = Instance.new("Frame")
+	Blur.Size = UDim2.new(1,0,1,0)
+	Blur.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	Blur.BackgroundTransparency = 0.5
+	Blur.BorderSizePixel = 0
+	Blur.ZIndex = 1
+	Blur.Parent = ScreenGui
 
-	local function corner(p, _x176)
-		local _x119 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,102,74,87,75,64,87},37))
-		_x119.CornerRadius = UDim.new(0, _x176 or 8)
-		_x119.Parent = p
-		return _x119
+	local function corner(p, r)
+		local c = Instance.new("UICorner")
+		c.CornerRadius = UDim.new(0, r or 8)
+		c.Parent = p
+		return c
 	end
-	local function stroke(p, 11l, thick)
-		local _x120 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,118,81,87,74,78,64},37))
-		_x120.Color = 11l; _x120.Thickness = thick or 1.5
-		_x120.Parent = p; return _x120
+	local function stroke(p, col, thick)
+		local s = Instance.new("UIStroke")
+		s.Color = col; s.Thickness = thick or 1.5
+		s.Parent = p; return s
 	end
-	local function gradient(p, colors, II1)
-		local Ill = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-		Ill.Color = ColorSequence.new(colors); Ill.Rotation = II1 or 90
-		Ill.Parent = p; return Ill
+	local function gradient(p, colors, rot)
+		local g = Instance.new("UIGradient")
+		g.Color = ColorSequence.new(colors); g.Rotation = rot or 90
+		g.Parent = p; return g
 	end
 
-	local _x121, H = 600, 330
-	local _x122 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x122.Name = (function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({104,68,76,75},37)
-	_x122.Size = UDim2.new(0,_x121,0,H)
-	_x122.Position = UDim2.new(0.5,-_x121/2,0.5,-H/2)
-	_x122.BackgroundColor3 = Color3.fromRGB(10,5,20)
-	_x122.BorderSizePixel = 0; _x122.ZIndex = 2
-	_x122.ClipsDescendants = true; _x122.Parent = _x117
-	corner(_x122, 12)
-	gradient(_x122, {
+	local W, H = 600, 330
+	local Main = Instance.new("Frame")
+	Main.Name = "Main"
+	Main.Size = UDim2.new(0,W,0,H)
+	Main.Position = UDim2.new(0.5,-W/2,0.5,-H/2)
+	Main.BackgroundColor3 = Color3.fromRGB(10,5,20)
+	Main.BorderSizePixel = 0; Main.ZIndex = 2
+	Main.ClipsDescendants = true; Main.Parent = ScreenGui
+	corner(Main, 12)
+	gradient(Main, {
 		ColorSequenceKeypoint.new(0,   Color3.fromRGB(15,5,35)),
 		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(8,3,18)),
 		ColorSequenceKeypoint.new(1,   Color3.fromRGB(20,8,45)),
 	}, 135)
-	local _x123 = stroke(_x122, Color3.fromRGB(120,60,200), 2)
+	local BorderStroke = stroke(Main, Color3.fromRGB(120,60,200), 2)
 
-	local _x124 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x124.Size = UDim2.new(0,90,1.5,0)
-	_x124.Position = UDim2.new(-0.2,0,-0.25,0)
-	_x124.BackgroundColor3 = Color3.fromRGB(255,255,255)
-	_x124.BackgroundTransparency = 0.88; _x124.BorderSizePixel = 0
-	_x124.ZIndex = 10; _x124.Rotation = 15; _x124.Parent = _x122
-	gradient(_x124, {
+	local KShimmer = Instance.new("Frame")
+	KShimmer.Size = UDim2.new(0,90,1.5,0)
+	KShimmer.Position = UDim2.new(-0.2,0,-0.25,0)
+	KShimmer.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	KShimmer.BackgroundTransparency = 0.88; KShimmer.BorderSizePixel = 0
+	KShimmer.ZIndex = 10; KShimmer.Rotation = 15; KShimmer.Parent = Main
+	gradient(KShimmer, {
 		ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),
 		ColorSequenceKeypoint.new(0.5,Color3.fromRGB(200,160,255)),
 		ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255)),
 	}, 0)
 	task.spawn(function()
-		while _x122 and _x122.Parent do
-			TweenService:Create(_x124, TweenInfo.new(1.8,Enum.EasingStyle.Sine), {Position=UDim2.new(1.1,0,-0.25,0)}):Play()
-			task.wait(1.9); _x124.Position=UDim2.new(-0.2,0,-0.25,0); task.wait(2.2)
+		while Main and Main.Parent do
+			TweenService:Create(KShimmer, TweenInfo.new(1.8,Enum.EasingStyle.Sine), {Position=UDim2.new(1.1,0,-0.25,0)}):Play()
+			task.wait(1.9); KShimmer.Position=UDim2.new(-0.2,0,-0.25,0); task.wait(2.2)
 		end
 	end)
 
-
+	-- Stars
 	for _ = 1, 22 do
-		local _x120 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-		_x120.Size = UDim2.new(0,math.random(2,3),0,math.random(2,3))
-		_x120.Position = UDim2.new(math.random(0,100)/100,0,math.random(0,100)/100,0)
-		_x120.BackgroundColor3 = Color3.fromRGB(math.random(160,255),math.random(80,160),math.random(200,255))
-		_x120.BackgroundTransparency = 0.3; _x120.BorderSizePixel = 0; _x120.ZIndex = 3; _x120.Parent = _x122
-		corner(_x120, 2)
-		TweenService:Create(_x120,TweenInfo.new(math.random(2,5),Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{BackgroundTransparency=0.92}):Play()
+		local s = Instance.new("Frame")
+		s.Size = UDim2.new(0,math.random(2,3),0,math.random(2,3))
+		s.Position = UDim2.new(math.random(0,100)/100,0,math.random(0,100)/100,0)
+		s.BackgroundColor3 = Color3.fromRGB(math.random(160,255),math.random(80,160),math.random(200,255))
+		s.BackgroundTransparency = 0.3; s.BorderSizePixel = 0; s.ZIndex = 3; s.Parent = Main
+		corner(s, 2)
+		TweenService:Create(s,TweenInfo.new(math.random(2,5),Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{BackgroundTransparency=0.92}):Play()
 	end
 
-
+	-- Rainbow border animation
 	task.spawn(function()
-		local 1l11=0
-		while _x122 and _x122.Parent do
-			1l11=(1l11+1.5)%360
-			_x123.Color = Color3.new(
-				0.35+math.sin(math.rad(1l11))*0.35,
-				0.08+math.sin(math.rad(1l11+120))*0.08,
-				0.55+math.sin(math.rad(1l11+240))*0.35
+		local a=0
+		while Main and Main.Parent do
+			a=(a+1.5)%360
+			BorderStroke.Color = Color3.new(
+				0.35+math.sin(math.rad(a))*0.35,
+				0.08+math.sin(math.rad(a+120))*0.08,
+				0.55+math.sin(math.rad(a+240))*0.35
 			)
 			task.wait(0.03)
 		end
 	end)
 
+	-- ── Left Panel — Socials ──────────────────────────────────
+	local LP = Instance.new("Frame")
+	LP.Size=UDim2.new(0,140,0,H-20); LP.Position=UDim2.new(0,10,0,10)
+	LP.BackgroundColor3=Color3.fromRGB(12,5,28); LP.BackgroundTransparency=0.3
+	LP.BorderSizePixel=0; LP.ZIndex=4; LP.Parent=Main
+	corner(LP,10); stroke(LP,Color3.fromRGB(90,40,160),1.5)
 
-	local _x125 = Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x125.Size=UDim2.new(0,140,0,H-20); _x125.Position=UDim2.new(0,10,0,10)
-	_x125.BackgroundColor3=Color3.fromRGB(12,5,28); _x125.BackgroundTransparency=0.3
-	_x125.BorderSizePixel=0; _x125.ZIndex=4; _x125.Parent=_x122
-	corner(_x125,10); stroke(_x125,Color3.fromRGB(90,40,160),1.5)
+	local SocHdr=Instance.new("Frame")
+	SocHdr.Size=UDim2.new(0.8,0,0,24); SocHdr.Position=UDim2.new(0.1,0,0,8)
+	SocHdr.BackgroundColor3=Color3.fromRGB(80,40,180); SocHdr.BorderSizePixel=0
+	SocHdr.ZIndex=5; SocHdr.Parent=LP
+	corner(SocHdr,7); stroke(SocHdr,Color3.fromRGB(160,100,255),1.5)
+	gradient(SocHdr,{ColorSequenceKeypoint.new(0,Color3.fromRGB(100,50,220)),ColorSequenceKeypoint.new(1,Color3.fromRGB(60,20,140))},90)
 
-	local _x126=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x126.Size=UDim2.new(0.8,0,0,24); _x126.Position=UDim2.new(0.1,0,0,8)
-	_x126.BackgroundColor3=Color3.fromRGB(80,40,180); _x126.BorderSizePixel=0
-	_x126.ZIndex=5; _x126.Parent=_x125
-	corner(_x126,7); stroke(_x126,Color3.fromRGB(160,100,255),1.5)
-	gradient(_x126,{ColorSequenceKeypoint.new(0,Color3.fromRGB(100,50,220)),ColorSequenceKeypoint.new(1,Color3.fromRGB(60,20,140))},90)
+	local SocTitle=Instance.new("TextLabel")
+	SocTitle.Text="Socials"; SocTitle.Size=UDim2.new(1,0,1,0)
+	SocTitle.TextColor3=Color3.fromRGB(255,255,255); SocTitle.Font=Enum.Font.GothamBold
+	SocTitle.TextSize=13; SocTitle.BackgroundTransparency=1; SocTitle.ZIndex=6
+	SocTitle.TextXAlignment=Enum.TextXAlignment.Center; SocTitle.Parent=SocHdr
 
-	local _x127=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37))
-	_x127.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,74,70,76,68,73,86},37); _x127.Size=UDim2.new(1,0,1,0)
-	_x127.TextColor3=Color3.fromRGB(255,255,255); _x127.Font=Enum.Font.GothamBold
-	_x127.TextSize=13; _x127.BackgroundTransparency=1; _x127.ZIndex=6
-	_x127.TextXAlignment=Enum.TextXAlignment.Center; _x127.Parent=_x126
-
-	local _x128=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x128.Size=UDim2.new(1,-12,1,-44); _x128.Position=UDim2.new(0,6,0,40)
-	_x128.BackgroundTransparency=1; _x128.ZIndex=5; _x128.Parent=_x125
-	local _x129=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,105,76,86,81,105,68,92,74,80,81},37))
-	_x129.Padding=UDim.new(0,5); _x129.SortOrder=Enum.SortOrder.LayoutOrder
-	_x129.Parent=_x128
+	local SocList=Instance.new("Frame")
+	SocList.Size=UDim2.new(1,-12,1,-44); SocList.Position=UDim2.new(0,6,0,40)
+	SocList.BackgroundTransparency=1; SocList.ZIndex=5; SocList.Parent=LP
+	local SocLayout=Instance.new("UIListLayout")
+	SocLayout.Padding=UDim.new(0,5); SocLayout.SortOrder=Enum.SortOrder.LayoutOrder
+	SocLayout.Parent=SocList
 
 	local function socBlock(title, lines)
-		local _x130=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37)); _x130.BackgroundTransparency=1
-		_x130.Size=UDim2.new(1,0,0,0); _x130.AutomaticSize=Enum.AutomaticSize.Y
-		_x130.ZIndex=5; _x130.Parent=_x128
-		local _x131=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,105,76,86,81,105,68,92,74,80,81},37)); _x131.Padding=UDim.new(0,1); _x131.Parent=_x130
-		local llII=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); llII.Text=title; llII.Size=UDim2.new(1,0,0,15)
-		llII.TextColor3=Color3.fromRGB(255,255,255); llII.Font=Enum.Font.GothamBold
-		llII.TextSize=12; llII.BackgroundTransparency=1; llII.ZIndex=6
-		llII.TextXAlignment=Enum.TextXAlignment.Left; llII.Parent=_x130
+		local blk=Instance.new("Frame"); blk.BackgroundTransparency=1
+		blk.Size=UDim2.new(1,0,0,0); blk.AutomaticSize=Enum.AutomaticSize.Y
+		blk.ZIndex=5; blk.Parent=SocList
+		local bl=Instance.new("UIListLayout"); bl.Padding=UDim.new(0,1); bl.Parent=blk
+		local h=Instance.new("TextLabel"); h.Text=title; h.Size=UDim2.new(1,0,0,15)
+		h.TextColor3=Color3.fromRGB(255,255,255); h.Font=Enum.Font.GothamBold
+		h.TextSize=12; h.BackgroundTransparency=1; h.ZIndex=6
+		h.TextXAlignment=Enum.TextXAlignment.Left; h.Parent=blk
 		for _, line in ipairs(lines) do
-			local II1l=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37)); II1l.Size=UDim2.new(1,0,0,14)
-			II1l.BackgroundTransparency=1; II1l.ZIndex=5; II1l.Parent=_x130
-			local _x132=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37)); _x132.Size=UDim2.new(0,8,0,8)
-			_x132.Position=UDim2.new(0,0,0.5,-4); _x132.BackgroundColor3=line[2] or Color3.fromRGB(150,100,255)
-			_x132.BorderSizePixel=0; _x132.ZIndex=6; _x132.Parent=II1l; corner(_x132,2)
-			local _x133=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x133.Text=line[1]
-			_x133.Size=UDim2.new(1,-12,1,0); _x133.Position=UDim2.new(0,12,0,0)
-			_x133.TextColor3=Color3.fromRGB(190,190,210); _x133.Font=Enum.Font.Gotham
-			_x133.TextSize=10; _x133.BackgroundTransparency=1; _x133.ZIndex=6
-			_x133.TextXAlignment=Enum.TextXAlignment.Left; _x133.TextWrapped=true; _x133.Parent=II1l
+			local row=Instance.new("Frame"); row.Size=UDim2.new(1,0,0,14)
+			row.BackgroundTransparency=1; row.ZIndex=5; row.Parent=blk
+			local dot=Instance.new("Frame"); dot.Size=UDim2.new(0,8,0,8)
+			dot.Position=UDim2.new(0,0,0.5,-4); dot.BackgroundColor3=line[2] or Color3.fromRGB(150,100,255)
+			dot.BorderSizePixel=0; dot.ZIndex=6; dot.Parent=row; corner(dot,2)
+			local lbl=Instance.new("TextLabel"); lbl.Text=line[1]
+			lbl.Size=UDim2.new(1,-12,1,0); lbl.Position=UDim2.new(0,12,0,0)
+			lbl.TextColor3=Color3.fromRGB(190,190,210); lbl.Font=Enum.Font.Gotham
+			lbl.TextSize=10; lbl.BackgroundTransparency=1; lbl.ZIndex=6
+			lbl.TextXAlignment=Enum.TextXAlignment.Left; lbl.TextWrapped=true; lbl.Parent=row
 		end
 	end
 
-	socBlock((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,76,86,70,74,87,65},37),{{(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({20,11,20,78},37),Color3.fromRGB(100,80,220)},{(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({20,11,20,78},37),Color3.fromRGB(80,180,80)},{"3",Color3.fromRGB(200,50,50)}})
-	socBlock((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({124,74,80,81,80,71,64},37),{{(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,80,71,86,70,87,76,71,64,87,86,5,23,11,20,78},37),Color3.fromRGB(220,60,60)}})
-	socBlock((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,81,74,87,64},37),{{(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,87,68,66,74,75,109,80,71,5,117,87,64,72,76,80,72,47,16,21,21,5,119,74,71,80,93},37),Color3.fromRGB(180,100,255)}})
+	socBlock("Discord",{{"1.1k",Color3.fromRGB(100,80,220)},{"1.1k",Color3.fromRGB(80,180,80)},{"3",Color3.fromRGB(200,50,50)}})
+	socBlock("Youtube",{{"Subscribers 2.1k",Color3.fromRGB(220,60,60)}})
+	socBlock("Store",{{"DragonHub Premium\n500 Robux",Color3.fromRGB(180,100,255)}})
 
+	-- ── Middle — Premium ──────────────────────────────────────
+	local MP=Instance.new("Frame")
+	MP.Size=UDim2.new(0,140,0,148); MP.Position=UDim2.new(0,158,0,10)
+	MP.BackgroundColor3=Color3.fromRGB(12,5,28); MP.BackgroundTransparency=0.3
+	MP.BorderSizePixel=0; MP.ZIndex=4; MP.Parent=Main
+	corner(MP,10); stroke(MP,Color3.fromRGB(200,50,80),1.5)
 
-	local _x134=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x134.Size=UDim2.new(0,140,0,148); _x134.Position=UDim2.new(0,158,0,10)
-	_x134.BackgroundColor3=Color3.fromRGB(12,5,28); _x134.BackgroundTransparency=0.3
-	_x134.BorderSizePixel=0; _x134.ZIndex=4; _x134.Parent=_x122
-	corner(_x134,10); stroke(_x134,Color3.fromRGB(200,50,80),1.5)
+	local BuyHdr=Instance.new("Frame")
+	BuyHdr.Size=UDim2.new(0.55,0,0,22); BuyHdr.Position=UDim2.new(0.225,0,-0.04,0)
+	BuyHdr.BackgroundColor3=Color3.fromRGB(200,40,80); BuyHdr.BorderSizePixel=0
+	BuyHdr.ZIndex=6; BuyHdr.Parent=MP
+	corner(BuyHdr,7); stroke(BuyHdr,Color3.fromRGB(255,80,120),1.5)
+	gradient(BuyHdr,{ColorSequenceKeypoint.new(0,Color3.fromRGB(230,50,100)),ColorSequenceKeypoint.new(1,Color3.fromRGB(160,20,60))},90)
+	local BuyLbl=Instance.new("TextLabel"); BuyLbl.Text="Buy"; BuyLbl.Size=UDim2.new(1,0,1,0)
+	BuyLbl.TextColor3=Color3.fromRGB(255,255,255); BuyLbl.Font=Enum.Font.GothamBold
+	BuyLbl.TextSize=12; BuyLbl.BackgroundTransparency=1; BuyLbl.ZIndex=7; BuyLbl.Parent=BuyHdr
 
-	local _x135=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x135.Size=UDim2.new(0.55,0,0,22); _x135.Position=UDim2.new(0.225,0,-0.04,0)
-	_x135.BackgroundColor3=Color3.fromRGB(200,40,80); _x135.BorderSizePixel=0
-	_x135.ZIndex=6; _x135.Parent=_x134
-	corner(_x135,7); stroke(_x135,Color3.fromRGB(255,80,120),1.5)
-	gradient(_x135,{ColorSequenceKeypoint.new(0,Color3.fromRGB(230,50,100)),ColorSequenceKeypoint.new(1,Color3.fromRGB(160,20,60))},90)
-	local _x136=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x136.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({103,80,92},37); _x136.Size=UDim2.new(1,0,1,0)
-	_x136.TextColor3=Color3.fromRGB(255,255,255); _x136.Font=Enum.Font.GothamBold
-	_x136.TextSize=12; _x136.BackgroundTransparency=1; _x136.ZIndex=7; _x136.Parent=_x135
+	local PremBody=Instance.new("Frame")
+	PremBody.Size=UDim2.new(1,-12,1,-34); PremBody.Position=UDim2.new(0,6,0,30)
+	PremBody.BackgroundTransparency=1; PremBody.ZIndex=5; PremBody.Parent=MP
+	local PremLayout=Instance.new("UIListLayout"); PremLayout.Padding=UDim.new(0,2); PremLayout.Parent=PremBody
 
-	local _x137=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x137.Size=UDim2.new(1,-12,1,-34); _x137.Position=UDim2.new(0,6,0,30)
-	_x137.BackgroundTransparency=1; _x137.ZIndex=5; _x137.Parent=_x134
-	local _x138=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,105,76,86,81,105,68,92,74,80,81},37)); _x138.Padding=UDim.new(0,2); _x138.Parent=_x137
-
-	local function pLbl(txt,11l,1I1,bold)
-		local _x139=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x139.Text=txt; _x139.Size=UDim2.new(1,0,0,(1I1 or 11)+2)
-		_x139.TextColor3=11l or Color3.fromRGB(255,255,255)
-		_x139.Font=bold and Enum.Font.GothamBold or Enum.Font.Gotham
-		_x139.TextSize=1I1 or 11; _x139.BackgroundTransparency=1; _x139.ZIndex=6
-		_x139.TextXAlignment=Enum.TextXAlignment.Left; _x139.TextWrapped=true; _x139.Parent=_x137
+	local function pLbl(txt,col,sz,bold)
+		local l=Instance.new("TextLabel"); l.Text=txt; l.Size=UDim2.new(1,0,0,(sz or 11)+2)
+		l.TextColor3=col or Color3.fromRGB(255,255,255)
+		l.Font=bold and Enum.Font.GothamBold or Enum.Font.Gotham
+		l.TextSize=sz or 11; l.BackgroundTransparency=1; l.ZIndex=6
+		l.TextXAlignment=Enum.TextXAlignment.Left; l.TextWrapped=true; l.Parent=PremBody
 	end
-	pLbl((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({117,87,64,72,76,80,72},37),Color3.fromRGB(255,255,255),13,true)
-	pLbl((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,74,81,68,73,5,96,93,64,70,80,81,76,74,75,5,16,72,14},37),Color3.fromRGB(100,220,100),10,true)
-	pLbl((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({117,87,76,70,64},37),Color3.fromRGB(220,60,80),10,true)
-	pLbl((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({16,21,21,5,87,74,71,80,93,5,8,5,73,76,67,64,81,76,72,64,47,118,64,87,83,64,87,5,103,74,74,86,81,5,8,5,20,5,72,74,75,81,77},37),Color3.fromRGB(200,200,210),10,false)
-	pLbl((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({103,64,75,76,67,76,81},37),Color3.fromRGB(220,60,80),10,true)
-	pLbl((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({110,64,92,73,64,86,86,10,117,87,64,72,76,80,72,5,67,64,68,81,80,87,64,86},37),Color3.fromRGB(200,200,210),10,false)
+	pLbl("Premium",Color3.fromRGB(255,255,255),13,true)
+	pLbl("Total Execution 5m+",Color3.fromRGB(100,220,100),10,true)
+	pLbl("Price",Color3.fromRGB(220,60,80),10,true)
+	pLbl("500 robux - lifetime\nServer Boost - 1 month",Color3.fromRGB(200,200,210),10,false)
+	pLbl("Benifit",Color3.fromRGB(220,60,80),10,true)
+	pLbl("Keyless/Premium features",Color3.fromRGB(200,200,210),10,false)
 
+	-- ── Middle — Supported Games ──────────────────────────────
+	local GP=Instance.new("Frame")
+	GP.Size=UDim2.new(0,140,0,158); GP.Position=UDim2.new(0,158,0,166)
+	GP.BackgroundColor3=Color3.fromRGB(12,5,28); GP.BackgroundTransparency=0.3
+	GP.BorderSizePixel=0; GP.ZIndex=4; GP.Parent=Main
+	corner(GP,10); stroke(GP,Color3.fromRGB(60,200,160),1.5)
 
-	local _x140=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x140.Size=UDim2.new(0,140,0,158); _x140.Position=UDim2.new(0,158,0,166)
-	_x140.BackgroundColor3=Color3.fromRGB(12,5,28); _x140.BackgroundTransparency=0.3
-	_x140.BorderSizePixel=0; _x140.ZIndex=4; _x140.Parent=_x122
-	corner(_x140,10); stroke(_x140,Color3.fromRGB(60,200,160),1.5)
+	local GHdr=Instance.new("Frame")
+	GHdr.Size=UDim2.new(0.85,0,0,22); GHdr.Position=UDim2.new(0.075,0,-0.04,0)
+	GHdr.BackgroundColor3=Color3.fromRGB(40,160,120); GHdr.BorderSizePixel=0
+	GHdr.ZIndex=6; GHdr.Parent=GP
+	corner(GHdr,7); stroke(GHdr,Color3.fromRGB(80,220,180),1.5)
+	local GTitle=Instance.new("TextLabel"); GTitle.Text="Supported Games"; GTitle.Size=UDim2.new(1,0,1,0)
+	GTitle.TextColor3=Color3.fromRGB(255,255,255); GTitle.Font=Enum.Font.GothamBold
+	GTitle.TextSize=11; GTitle.BackgroundTransparency=1; GTitle.ZIndex=7
+	GTitle.TextXAlignment=Enum.TextXAlignment.Center; GTitle.Parent=GHdr
 
-	local _x141=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x141.Size=UDim2.new(0.85,0,0,22); _x141.Position=UDim2.new(0.075,0,-0.04,0)
-	_x141.BackgroundColor3=Color3.fromRGB(40,160,120); _x141.BorderSizePixel=0
-	_x141.ZIndex=6; _x141.Parent=_x140
-	corner(_x141,7); stroke(_x141,Color3.fromRGB(80,220,180),1.5)
-	local _x142=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x142.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({118,80,85,85,74,87,81,64,65,5,98,68,72,64,86},37); _x142.Size=UDim2.new(1,0,1,0)
-	_x142.TextColor3=Color3.fromRGB(255,255,255); _x142.Font=Enum.Font.GothamBold
-	_x142.TextSize=11; _x142.BackgroundTransparency=1; _x142.ZIndex=7
-	_x142.TextXAlignment=Enum.TextXAlignment.Center; _x142.Parent=_x141
-
-	local _x143=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x143.Size=UDim2.new(1,-10,1,-32); _x143.Position=UDim2.new(0,5,0,28)
-	_x143.BackgroundTransparency=1; _x143.ZIndex=5; _x143.Parent=_x140
-	local _x144=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,105,76,86,81,105,68,92,74,80,81},37)); _x144.Padding=UDim.new(0,2); _x144.Parent=_x143
-	local _x145={Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255),Color3.fromRGB(255,160,80),Color3.fromRGB(255,160,80),Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255)}
+	local GList=Instance.new("Frame")
+	GList.Size=UDim2.new(1,-10,1,-32); GList.Position=UDim2.new(0,5,0,28)
+	GList.BackgroundTransparency=1; GList.ZIndex=5; GList.Parent=GP
+	local GLayout=Instance.new("UIListLayout"); GLayout.Padding=UDim.new(0,2); GLayout.Parent=GList
+	local gColors={Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255),Color3.fromRGB(255,160,80),Color3.fromRGB(255,160,80),Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255)}
 	for i, name in ipairs(KEY_CFG.SupportedGames) do
-		local _x146=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x146.Text=name; _x146.Size=UDim2.new(1,0,0,17)
-		_x146.TextColor3=_x145[i] or Color3.fromRGB(255,255,255); _x146.Font=Enum.Font.Gotham
-		_x146.TextSize=10; _x146.BackgroundTransparency=1; _x146.ZIndex=6
-		_x146.TextXAlignment=Enum.TextXAlignment.Left; _x146.Parent=_x143
+		local gl=Instance.new("TextLabel"); gl.Text=name; gl.Size=UDim2.new(1,0,0,17)
+		gl.TextColor3=gColors[i] or Color3.fromRGB(255,255,255); gl.Font=Enum.Font.Gotham
+		gl.TextSize=10; gl.BackgroundTransparency=1; gl.ZIndex=6
+		gl.TextXAlignment=Enum.TextXAlignment.Left; gl.Parent=GList
 	end
 
+	-- ── Right Panel ───────────────────────────────────────────
+	local RP=Instance.new("Frame")
+	RP.Size=UDim2.new(0,282,0,H-20); RP.Position=UDim2.new(0,308,0,10)
+	RP.BackgroundTransparency=1; RP.ZIndex=4; RP.Parent=Main
 
-	local _x147=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x147.Size=UDim2.new(0,282,0,H-20); _x147.Position=UDim2.new(0,308,0,10)
-	_x147.BackgroundTransparency=1; _x147.ZIndex=4; _x147.Parent=_x122
+	local AnimeFrame=Instance.new("Frame")
+	AnimeFrame.Size=UDim2.new(1,0,0,190); AnimeFrame.Position=UDim2.new(0,0,0,0)
+	AnimeFrame.BackgroundColor3=Color3.fromRGB(25,8,55); AnimeFrame.BorderSizePixel=0
+	AnimeFrame.ZIndex=4; AnimeFrame.ClipsDescendants=true; AnimeFrame.Parent=RP
+	corner(AnimeFrame,12); stroke(AnimeFrame,Color3.fromRGB(120,60,200),1.5)
+	gradient(AnimeFrame,{ColorSequenceKeypoint.new(0,Color3.fromRGB(40,15,80)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(20,8,50)),ColorSequenceKeypoint.new(1,Color3.fromRGB(60,20,100))},135)
 
-	local _x148=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x148.Size=UDim2.new(1,0,0,190); _x148.Position=UDim2.new(0,0,0,0)
-	_x148.BackgroundColor3=Color3.fromRGB(25,8,55); _x148.BorderSizePixel=0
-	_x148.ZIndex=4; _x148.ClipsDescendants=true; _x148.Parent=_x147
-	corner(_x148,12); stroke(_x148,Color3.fromRGB(120,60,200),1.5)
-	gradient(_x148,{ColorSequenceKeypoint.new(0,Color3.fromRGB(40,15,80)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(20,8,50)),ColorSequenceKeypoint.new(1,Color3.fromRGB(60,20,100))},135)
+	local AnimeImg=Instance.new("ImageLabel")
+	AnimeImg.Size=UDim2.new(1,0,1,0); AnimeImg.Position=UDim2.new(0,0,0,0)
+	AnimeImg.Image="rbxassetid://"..KEY_CFG.LogoTextureId; AnimeImg.BackgroundTransparency=1
+	AnimeImg.ZIndex=5; AnimeImg.ScaleType=Enum.ScaleType.Crop; AnimeImg.Parent=AnimeFrame
 
-	local _x149=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,72,68,66,64,105,68,71,64,73},37))
-	_x149.Size=UDim2.new(1,0,1,0); _x149.Position=UDim2.new(0,0,0,0)
-	_x149.Image=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({87,71,93,68,86,86,64,81,76,65,31,10,10},37)..KEY_CFG.LogoTextureId; _x149.BackgroundTransparency=1
-	_x149.ZIndex=5; _x149.ScaleType=Enum.ScaleType.Crop; _x149.Parent=_x148
+	local Tint=Instance.new("Frame")
+	Tint.Size=UDim2.new(1,0,1,0); Tint.BackgroundColor3=Color3.fromRGB(50,15,100)
+	Tint.BackgroundTransparency=0.72; Tint.BorderSizePixel=0; Tint.ZIndex=6; Tint.Parent=AnimeFrame
 
-	local _x150=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x150.Size=UDim2.new(1,0,1,0); _x150.BackgroundColor3=Color3.fromRGB(50,15,100)
-	_x150.BackgroundTransparency=0.72; _x150.BorderSizePixel=0; _x150.ZIndex=6; _x150.Parent=_x148
+	local BottomFade=Instance.new("Frame")
+	BottomFade.Size=UDim2.new(1,0,0.35,0); BottomFade.Position=UDim2.new(0,0,0.65,0)
+	BottomFade.BackgroundColor3=Color3.fromRGB(10,5,20); BottomFade.BackgroundTransparency=0
+	BottomFade.BorderSizePixel=0; BottomFade.ZIndex=7; BottomFade.Parent=AnimeFrame
+	gradient(BottomFade,{ColorSequenceKeypoint.new(0,Color3.fromRGB(10,5,20)),ColorSequenceKeypoint.new(1,Color3.fromRGB(10,5,20))},0)
+	local btmG=Instance.new("UIGradient")
+	btmG.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,1),NumberSequenceKeypoint.new(1,0)})
+	btmG.Rotation=90; btmG.Parent=BottomFade
 
-	local _x151=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x151.Size=UDim2.new(1,0,0.35,0); _x151.Position=UDim2.new(0,0,0.65,0)
-	_x151.BackgroundColor3=Color3.fromRGB(10,5,20); _x151.BackgroundTransparency=0
-	_x151.BorderSizePixel=0; _x151.ZIndex=7; _x151.Parent=_x148
-	gradient(_x151,{ColorSequenceKeypoint.new(0,Color3.fromRGB(10,5,20)),ColorSequenceKeypoint.new(1,Color3.fromRGB(10,5,20))},0)
-	local _x152=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	_x152.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,1),NumberSequenceKeypoint.new(1,0)})
-	_x152.Rotation=90; _x152.Parent=_x151
+	local LogoRow=Instance.new("Frame")
+	LogoRow.Size=UDim2.new(1,-8,0,44); LogoRow.Position=UDim2.new(0,4,1,-48)
+	LogoRow.BackgroundTransparency=1; LogoRow.ZIndex=8; LogoRow.Parent=AnimeFrame
 
-	local _x153=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x153.Size=UDim2.new(1,-8,0,44); _x153.Position=UDim2.new(0,4,1,-48)
-	_x153.BackgroundTransparency=1; _x153.ZIndex=8; _x153.Parent=_x148
+	local LogoCircle=Instance.new("Frame")
+	LogoCircle.Size=UDim2.new(0,36,0,36); LogoCircle.Position=UDim2.new(0,0,0.5,-18)
+	LogoCircle.BackgroundColor3=Color3.fromRGB(25,8,60); LogoCircle.BorderSizePixel=0
+	LogoCircle.ZIndex=9; LogoCircle.Parent=LogoRow
+	corner(LogoCircle,18); stroke(LogoCircle,Color3.fromRGB(160,100,255),2)
+	TweenService:Create(LogoCircle,TweenInfo.new(1.2,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{BackgroundColor3=Color3.fromRGB(55,18,110)}):Play()
 
-	local _x154=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x154.Size=UDim2.new(0,36,0,36); _x154.Position=UDim2.new(0,0,0.5,-18)
-	_x154.BackgroundColor3=Color3.fromRGB(25,8,60); _x154.BorderSizePixel=0
-	_x154.ZIndex=9; _x154.Parent=_x153
-	corner(_x154,18); stroke(_x154,Color3.fromRGB(160,100,255),2)
-	TweenService:Create(_x154,TweenInfo.new(1.2,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{BackgroundColor3=Color3.fromRGB(55,18,110)}):Play()
+	local LogoV=Instance.new("TextLabel"); LogoV.Text="V"; LogoV.Size=UDim2.new(1,0,1,0)
+	LogoV.TextColor3=Color3.fromRGB(190,130,255); LogoV.Font=Enum.Font.GothamBold
+	LogoV.TextSize=20; LogoV.BackgroundTransparency=1; LogoV.ZIndex=10; LogoV.Parent=LogoCircle
 
-	local _x155=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x155.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({115},37); _x155.Size=UDim2.new(1,0,1,0)
-	_x155.TextColor3=Color3.fromRGB(190,130,255); _x155.Font=Enum.Font.GothamBold
-	_x155.TextSize=20; _x155.BackgroundTransparency=1; _x155.ZIndex=10; _x155.Parent=_x154
+	local VexonLbl=Instance.new("TextLabel")
+	VexonLbl.Size=UDim2.new(0,150,0,36); VexonLbl.Position=UDim2.new(0,42,0,4)
+	VexonLbl.Text="DragonHub"; VexonLbl.Font=Enum.Font.GothamBold; VexonLbl.TextSize=22
+	VexonLbl.BackgroundTransparency=1; VexonLbl.ZIndex=9
+	VexonLbl.TextXAlignment=Enum.TextXAlignment.Left; VexonLbl.Parent=LogoRow
+	local VexGrad=Instance.new("UIGradient")
+	VexGrad.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(210,150,255)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,210,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(160,100,240))})
+	VexGrad.Rotation=45; VexGrad.Parent=VexonLbl
 
-	local _x156=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37))
-	_x156.Size=UDim2.new(0,150,0,36); _x156.Position=UDim2.new(0,42,0,4)
-	_x156.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,87,68,66,74,75,109,80,71},37); _x156.Font=Enum.Font.GothamBold; _x156.TextSize=22
-	_x156.BackgroundTransparency=1; _x156.ZIndex=9
-	_x156.TextXAlignment=Enum.TextXAlignment.Left; _x156.Parent=_x153
-	local _x157=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({112,108,98,87,68,65,76,64,75,81},37))
-	_x157.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(210,150,255)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,210,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(160,100,240))})
-	_x157.Rotation=45; _x157.Parent=_x156
-
-	local _x158=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x158.Size=UDim2.new(0,70,1.5,0); _x158.Position=UDim2.new(-0.3,0,-0.25,0)
-	_x158.BackgroundColor3=Color3.fromRGB(255,255,255); _x158.BackgroundTransparency=0.88
-	_x158.BorderSizePixel=0; _x158.ZIndex=11; _x158.Rotation=15; _x158.Parent=_x148
-	gradient(_x158,{ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(220,180,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))},0)
+	local AShimmer=Instance.new("Frame")
+	AShimmer.Size=UDim2.new(0,70,1.5,0); AShimmer.Position=UDim2.new(-0.3,0,-0.25,0)
+	AShimmer.BackgroundColor3=Color3.fromRGB(255,255,255); AShimmer.BackgroundTransparency=0.88
+	AShimmer.BorderSizePixel=0; AShimmer.ZIndex=11; AShimmer.Rotation=15; AShimmer.Parent=AnimeFrame
+	gradient(AShimmer,{ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(220,180,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))},0)
 	task.spawn(function()
-		while _x148 and _x148.Parent do
-			TweenService:Create(_x158,TweenInfo.new(2,Enum.EasingStyle.Sine),{Position=UDim2.new(1.2,0,-0.25,0)}):Play()
-			task.wait(2.1); _x158.Position=UDim2.new(-0.3,0,-0.25,0); task.wait(2)
+		while AnimeFrame and AnimeFrame.Parent do
+			TweenService:Create(AShimmer,TweenInfo.new(2,Enum.EasingStyle.Sine),{Position=UDim2.new(1.2,0,-0.25,0)}):Play()
+			task.wait(2.1); AShimmer.Position=UDim2.new(-0.3,0,-0.25,0); task.wait(2)
 		end
 	end)
 
+	-- ── Key Input Section ─────────────────────────────────────
+	local KS=Instance.new("Frame")
+	KS.Size=UDim2.new(1,0,0,H-20-198); KS.Position=UDim2.new(0,0,0,198)
+	KS.BackgroundColor3=Color3.fromRGB(12,5,28); KS.BackgroundTransparency=0.25
+	KS.BorderSizePixel=0; KS.ZIndex=4; KS.Parent=RP
+	corner(KS,10); stroke(KS,Color3.fromRGB(100,50,200),1.5)
 
-	local _x159=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37))
-	_x159.Size=UDim2.new(1,0,0,H-20-198); _x159.Position=UDim2.new(0,0,0,198)
-	_x159.BackgroundColor3=Color3.fromRGB(12,5,28); _x159.BackgroundTransparency=0.25
-	_x159.BorderSizePixel=0; _x159.ZIndex=4; _x159.Parent=_x147
-	corner(_x159,10); stroke(_x159,Color3.fromRGB(100,50,200),1.5)
+	local KTitle=Instance.new("TextLabel"); KTitle.Text=KEY_CFG.Title
+	KTitle.Size=UDim2.new(1,-12,0,18); KTitle.Position=UDim2.new(0,6,0,6)
+	KTitle.TextColor3=Color3.fromRGB(255,255,255); KTitle.Font=Enum.Font.GothamBold
+	KTitle.TextSize=13; KTitle.BackgroundTransparency=1; KTitle.ZIndex=5
+	KTitle.TextXAlignment=Enum.TextXAlignment.Left; KTitle.Parent=KS
 
-	local _x160=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x160.Text=KEY_CFG.Title
-	_x160.Size=UDim2.new(1,-12,0,18); _x160.Position=UDim2.new(0,6,0,6)
-	_x160.TextColor3=Color3.fromRGB(255,255,255); _x160.Font=Enum.Font.GothamBold
-	_x160.TextSize=13; _x160.BackgroundTransparency=1; _x160.ZIndex=5
-	_x160.TextXAlignment=Enum.TextXAlignment.Left; _x160.Parent=_x159
+	local KSub=Instance.new("TextLabel"); KSub.Text=KEY_CFG.Subtitle
+	KSub.Size=UDim2.new(1,-12,0,26); KSub.Position=UDim2.new(0,6,0,25)
+	KSub.TextColor3=Color3.fromRGB(150,150,180); KSub.Font=Enum.Font.Gotham
+	KSub.TextSize=9; KSub.BackgroundTransparency=1; KSub.ZIndex=5
+	KSub.TextXAlignment=Enum.TextXAlignment.Left; KSub.TextWrapped=true; KSub.Parent=KS
 
-	local _x161=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x161.Text=KEY_CFG.Subtitle
-	_x161.Size=UDim2.new(1,-12,0,26); _x161.Position=UDim2.new(0,6,0,25)
-	_x161.TextColor3=Color3.fromRGB(150,150,180); _x161.Font=Enum.Font.Gotham
-	_x161.TextSize=9; _x161.BackgroundTransparency=1; _x161.ZIndex=5
-	_x161.TextXAlignment=Enum.TextXAlignment.Left; _x161.TextWrapped=true; _x161.Parent=_x159
+	local Sep=Instance.new("Frame"); Sep.Size=UDim2.new(1,-12,0,1); Sep.Position=UDim2.new(0,6,0,54)
+	Sep.BackgroundColor3=Color3.fromRGB(70,35,130); Sep.BorderSizePixel=0; Sep.ZIndex=5; Sep.Parent=KS
 
-	local _x162=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37)); _x162.Size=UDim2.new(1,-12,0,1); _x162.Position=UDim2.new(0,6,0,54)
-	_x162.BackgroundColor3=Color3.fromRGB(70,35,130); _x162.BorderSizePixel=0; _x162.ZIndex=5; _x162.Parent=_x159
+	local KIF=Instance.new("Frame"); KIF.Size=UDim2.new(1,-12,0,30); KIF.Position=UDim2.new(0,6,0,60)
+	KIF.BackgroundColor3=Color3.fromRGB(18,7,40); KIF.BorderSizePixel=0; KIF.ZIndex=5; KIF.Parent=KS
+	corner(KIF,7); local KIFStroke=stroke(KIF,Color3.fromRGB(80,40,160),1.5)
 
-	local _x163=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({99,87,68,72,64},37)); _x163.Size=UDim2.new(1,-12,0,30); _x163.Position=UDim2.new(0,6,0,60)
-	_x163.BackgroundColor3=Color3.fromRGB(18,7,40); _x163.BorderSizePixel=0; _x163.ZIndex=5; _x163.Parent=_x159
-	corner(_x163,7); local _x164=stroke(_x163,Color3.fromRGB(80,40,160),1.5)
-
-	local _x165=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,103,74,93},37))
-	_x165.PlaceholderText=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({96,75,81,64,87,5,92,74,80,87,5,110,64,92},37); _x165.PlaceholderColor3=Color3.fromRGB(100,80,140)
-	_x165.Text=""; _x165.Size=UDim2.new(1,-12,1,0); _x165.Position=UDim2.new(0,6,0,0)
-	_x165.TextColor3=Color3.fromRGB(220,200,255); _x165.Font=Enum.Font.Gotham
-	_x165.TextSize=12; _x165.BackgroundTransparency=1; _x165.ZIndex=6
-	_x165.ClearTextOnFocus=false; _x165.TextXAlignment=Enum.TextXAlignment.Left; _x165.Parent=_x163
-	_x165.Focused:Connect(function()
-		TweenService:Create(_x163,TweenInfo.new(0.2),{BackgroundColor3=Color3.fromRGB(28,10,58)}):Play()
-		_x164.Color=Color3.fromRGB(150,90,255); _x164.Thickness=2
+	local KeyInput=Instance.new("TextBox")
+	KeyInput.PlaceholderText="Enter your Key"; KeyInput.PlaceholderColor3=Color3.fromRGB(100,80,140)
+	KeyInput.Text=""; KeyInput.Size=UDim2.new(1,-12,1,0); KeyInput.Position=UDim2.new(0,6,0,0)
+	KeyInput.TextColor3=Color3.fromRGB(220,200,255); KeyInput.Font=Enum.Font.Gotham
+	KeyInput.TextSize=12; KeyInput.BackgroundTransparency=1; KeyInput.ZIndex=6
+	KeyInput.ClearTextOnFocus=false; KeyInput.TextXAlignment=Enum.TextXAlignment.Left; KeyInput.Parent=KIF
+	KeyInput.Focused:Connect(function()
+		TweenService:Create(KIF,TweenInfo.new(0.2),{BackgroundColor3=Color3.fromRGB(28,10,58)}):Play()
+		KIFStroke.Color=Color3.fromRGB(150,90,255); KIFStroke.Thickness=2
 	end)
-	_x165.FocusLost:Connect(function()
-		TweenService:Create(_x163,TweenInfo.new(0.2),{BackgroundColor3=Color3.fromRGB(18,7,40)}):Play()
-		_x164.Color=Color3.fromRGB(80,40,160); _x164.Thickness=1.5
+	KeyInput.FocusLost:Connect(function()
+		TweenService:Create(KIF,TweenInfo.new(0.2),{BackgroundColor3=Color3.fromRGB(18,7,40)}):Play()
+		KIFStroke.Color=Color3.fromRGB(80,40,160); KIFStroke.Thickness=1.5
 	end)
 
-	local _x166=96
-	local _x167=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,103,80,81,81,74,75},37)); _x167.Size=UDim2.new(0,100,0,28); _x167.Position=UDim2.new(0,6,0,_x166)
-	_x167.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({98,64,81,5,110,64,92},37); _x167.Font=Enum.Font.GothamBold; _x167.TextSize=12
-	_x167.TextColor3=Color3.fromRGB(255,255,255); _x167.BorderSizePixel=0; _x167.ZIndex=6; _x167.Parent=_x159
-	corner(_x167,7); gradient(_x167,{ColorSequenceKeypoint.new(0,Color3.fromRGB(160,60,220)),ColorSequenceKeypoint.new(1,Color3.fromRGB(100,20,160))},90)
-	local _x168=stroke(_x167,Color3.fromRGB(200,120,255),1.5)
+	local BtnY=96
+	local GetBtn=Instance.new("TextButton"); GetBtn.Size=UDim2.new(0,100,0,28); GetBtn.Position=UDim2.new(0,6,0,BtnY)
+	GetBtn.Text="Get Key"; GetBtn.Font=Enum.Font.GothamBold; GetBtn.TextSize=12
+	GetBtn.TextColor3=Color3.fromRGB(255,255,255); GetBtn.BorderSizePixel=0; GetBtn.ZIndex=6; GetBtn.Parent=KS
+	corner(GetBtn,7); gradient(GetBtn,{ColorSequenceKeypoint.new(0,Color3.fromRGB(160,60,220)),ColorSequenceKeypoint.new(1,Color3.fromRGB(100,20,160))},90)
+	local GStroke=stroke(GetBtn,Color3.fromRGB(200,120,255),1.5)
 
-	local _x169=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,103,80,81,81,74,75},37)); _x169.Size=UDim2.new(0,100,0,28); _x169.Position=UDim2.new(0,114,0,_x166)
-	_x169.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({102,77,64,70,78,5,110,64,92},37); _x169.Font=Enum.Font.GothamBold; _x169.TextSize=12
-	_x169.TextColor3=Color3.fromRGB(255,255,255); _x169.BorderSizePixel=0; _x169.ZIndex=6; _x169.Parent=_x159
-	corner(_x169,7); gradient(_x169,{ColorSequenceKeypoint.new(0,Color3.fromRGB(60,160,220)),ColorSequenceKeypoint.new(1,Color3.fromRGB(20,100,160))},90)
-	local _x170=stroke(_x169,Color3.fromRGB(100,200,255),1.5)
+	local ChkBtn=Instance.new("TextButton"); ChkBtn.Size=UDim2.new(0,100,0,28); ChkBtn.Position=UDim2.new(0,114,0,BtnY)
+	ChkBtn.Text="Check Key"; ChkBtn.Font=Enum.Font.GothamBold; ChkBtn.TextSize=12
+	ChkBtn.TextColor3=Color3.fromRGB(255,255,255); ChkBtn.BorderSizePixel=0; ChkBtn.ZIndex=6; ChkBtn.Parent=KS
+	corner(ChkBtn,7); gradient(ChkBtn,{ColorSequenceKeypoint.new(0,Color3.fromRGB(60,160,220)),ColorSequenceKeypoint.new(1,Color3.fromRGB(20,100,160))},90)
+	local CStroke=stroke(ChkBtn,Color3.fromRGB(100,200,255),1.5)
 
-	local _x171=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,103,80,81,81,74,75},37)); _x171.Size=UDim2.new(0,28,0,28); _x171.Position=UDim2.new(0,222,0,_x166)
-	_x171.Text=(function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({93},37); _x171.Font=Enum.Font.GothamBold; _x171.TextSize=14
-	_x171.TextColor3=Color3.fromRGB(255,255,255); _x171.BorderSizePixel=0; _x171.ZIndex=6; _x171.Parent=_x159
-	corner(_x171,7); gradient(_x171,{ColorSequenceKeypoint.new(0,Color3.fromRGB(60,90,200)),ColorSequenceKeypoint.new(1,Color3.fromRGB(30,50,140))},90)
-	stroke(_x171,Color3.fromRGB(100,140,255),1.5)
+	local CloseBtn=Instance.new("TextButton"); CloseBtn.Size=UDim2.new(0,28,0,28); CloseBtn.Position=UDim2.new(0,222,0,BtnY)
+	CloseBtn.Text="x"; CloseBtn.Font=Enum.Font.GothamBold; CloseBtn.TextSize=14
+	CloseBtn.TextColor3=Color3.fromRGB(255,255,255); CloseBtn.BorderSizePixel=0; CloseBtn.ZIndex=6; CloseBtn.Parent=KS
+	corner(CloseBtn,7); gradient(CloseBtn,{ColorSequenceKeypoint.new(0,Color3.fromRGB(60,90,200)),ColorSequenceKeypoint.new(1,Color3.fromRGB(30,50,140))},90)
+	stroke(CloseBtn,Color3.fromRGB(100,140,255),1.5)
 
 	task.spawn(function()
-		while _x122 and _x122.Parent do
-			TweenService:Create(_x168,TweenInfo.new(0.9,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{Thickness=2.2}):Play()
-			TweenService:Create(_x170,TweenInfo.new(0.9,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{Thickness=2.2}):Play()
+		while Main and Main.Parent do
+			TweenService:Create(GStroke,TweenInfo.new(0.9,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{Thickness=2.2}):Play()
+			TweenService:Create(CStroke,TweenInfo.new(0.9,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{Thickness=2.2}):Play()
 			task.wait(1.9)
 		end
 	end)
 
-	local _x172=Instance.new((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({113,64,93,81,105,68,71,64,73},37)); _x172.Text=""
-	_x172.Size=UDim2.new(1,-12,0,16); _x172.Position=UDim2.new(0,6,1,2)
-	_x172.TextColor3=Color3.fromRGB(255,80,100); _x172.Font=Enum.Font.GothamBold
-	_x172.TextSize=10; _x172.BackgroundTransparency=1; _x172.ZIndex=6
-	_x172.TextXAlignment=Enum.TextXAlignment.Center; _x172.Parent=_x159
+	local Notif=Instance.new("TextLabel"); Notif.Text=""
+	Notif.Size=UDim2.new(1,-12,0,16); Notif.Position=UDim2.new(0,6,1,2)
+	Notif.TextColor3=Color3.fromRGB(255,80,100); Notif.Font=Enum.Font.GothamBold
+	Notif.TextSize=10; Notif.BackgroundTransparency=1; Notif.ZIndex=6
+	Notif.TextXAlignment=Enum.TextXAlignment.Center; Notif.Parent=KS
 
-	local function notify(msg, 11l)
-		_x172.Text=msg; _x172.TextColor3=11l or Color3.fromRGB(255,80,100); _x172.TextTransparency=0
-		TweenService:Create(_x172,TweenInfo.new(2.5,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false,1.5),{TextTransparency=1}):Play()
+	local function notify(msg, col)
+		Notif.Text=msg; Notif.TextColor3=col or Color3.fromRGB(255,80,100); Notif.TextTransparency=0
+		TweenService:Create(Notif,TweenInfo.new(2.5,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false,1.5),{TextTransparency=1}):Play()
 	end
 
 	local function pressAnim(btn)
@@ -1201,33 +1240,33 @@ local function LaunchKeySystem()
 		TweenService:Create(btn,TweenInfo.new(0.08),{Size=UDim2.new(0,btn.Size.X.Offset+4,0,btn.Size.Y.Offset+2)}):Play()
 	end
 
-	_x167.MouseButton1Click:Connect(function()
-		pressAnim(_x167)
+	GetBtn.MouseButton1Click:Connect(function()
+		pressAnim(GetBtn)
 		if setclipboard then
 			setclipboard(KEY_CFG.GetKeyLink)
-			notify((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({97,76,86,70,74,87,65,5,73,76,75,78,5,70,74,85,76,64,65,4,5,98,74,5,66,64,81,5,92,74,80,87,5,78,64,92,11},37), Color3.fromRGB(100,200,255))
+			notify("Discord link copied! Go get your key.", Color3.fromRGB(100,200,255))
 		else
-			notify((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({111,74,76,75,31,5},37)..KEY_CFG.GetKeyLink, Color3.fromRGB(100,200,255))
+			notify("Join: "..KEY_CFG.GetKeyLink, Color3.fromRGB(100,200,255))
 		end
 	end)
 
-	_x169.MouseButton1Click:Connect(function()
-		pressAnim(_x169)
-		local _x173=_x165.Text:match((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({123,0,86,15,13,11,8,12,0,86,15,1},37))
-		if _x173=="" then notify((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({117,73,64,68,86,64,5,64,75,81,64,87,5,92,74,80,87,5,78,64,92,5,67,76,87,86,81,4},37), Color3.fromRGB(255,200,60)); return end
-		local _x174=false
-		for _, v in ipairs(KEY_CFG.ValidKeys) do if _x173==v then _x174=true; break end end
-		if _x174 then
-			notify((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({110,64,92,5,68,70,70,64,85,81,64,65,4,5,114,64,73,70,74,72,64,5,81,74,5,97,87,68,66,74,75,109,80,71,4},37), Color3.fromRGB(80,220,120))
+	ChkBtn.MouseButton1Click:Connect(function()
+		pressAnim(ChkBtn)
+		local key=KeyInput.Text:match("^%s*(.-)%s*$")
+		if key=="" then notify("Please enter your key first!", Color3.fromRGB(255,200,60)); return end
+		local valid=false
+		for _, v in ipairs(KEY_CFG.ValidKeys) do if key==v then valid=true; break end end
+		if valid then
+			notify("Key accepted! Welcome to DragonHub!", Color3.fromRGB(80,220,120))
 			task.wait(1.5)
-			TweenService:Create(_x122,TweenInfo.new(0.5,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
-			TweenService:Create(_x118,TweenInfo.new(0.5,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
+			TweenService:Create(Main,TweenInfo.new(0.5,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
+			TweenService:Create(Blur,TweenInfo.new(0.5,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
 			task.wait(0.55)
-			_x117:Destroy()
-
-local _x175=bit32 and bit32.bxor or function(1l11,b) local _x176,m=0,0x80000000 repeat local _x177,y=1l11>=m and 1 or 0,b>=m and 1 or 0 if _x177~=y then _x176=_x176+m end 1l11=(1l11-_x177*m)*2 b=(b-y*m)*2 m=m/2 until m<1 return _x176 end
-local _x178=90
-local _x179={
+			ScreenGui:Destroy()
+-- [[ obfuscated ]] --
+local _BXOR=bit32 and bit32.bxor or function(a,b) local r,m=0,0x80000000 repeat local x,y=a>=m and 1 or 0,b>=m and 1 or 0 if x~=y then r=r+m end a=(a-x*m)*2 b=(b-y*m)*2 m=m/2 until m<1 return r end
+local _KEY_=90
+local _GOOG={
   119,119,122,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,87,80,119,119,122,122,122,105,
   108,106,125,41,122,29,27,29,122,18,47,56,122,114,29,40,53,45,122,59,122,29,59,40,62,63,52,122,104,115,87,80,119,119,122,122,122,15,19,122,22,51,56,40,59,40,35,96,122,50,46,46,42,41,96,117,117,42,59,41,46,63,60,35,116,59,42,42,117,20,46,109,31,40,47,13,49,117,40,59,
   45,87,80,119,119,122,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,103,87,80,54,53,57,
@@ -2240,69 +2279,72 @@ local _x179={
   46,114,120,50,46,46,42,41,96,117,117,40,59,45,116,61,51,46,50,47,56,47,41,63,40,57,53,52,46,63,52,46,116,57,53,55,117,55,63,61,47,55,51,50,47,56,41,46,63,52,46,50,117,46,63,41,46,61,59,61,104,117,40,63,60,41,117,50,63,59,62,41,117,55,59,51,52,117,46,63,
   41,46,120,115,115,114,115,87,80,63,52,62,115
 }
-local _x180={}
-for _IDX_=1,#_x179 do
-  _x180[_IDX_]=string.char(_x175(_x179[_IDX_],_x178))
+local _STR_={}
+for _IDX_=1,#_GOOG do
+  _STR_[_IDX_]=string.char(_BXOR(_GOOG[_IDX_],_KEY_))
 end
-local _x181=table.concat(_x180)
-local _x182,_err=loadstring(_x181)
-if not _x182 then error(_err) end
-_x182()
+local _DECD=table.concat(_STR_)
+local _EXEC,_err=loadstring(_DECD)
+if not _EXEC then error(_err) end
+_EXEC()
 
 		else
-			notify((function(_0,_1)local lll=""for _,_3 in ipairs(_0)do lll=lll..string.char(_3~_1)end;return lll end)({108,75,83,68,73,76,65,5,78,64,92,4,5,111,74,76,75,5,97,76,86,70,74,87,65,5,81,74,5,66,64,81,5,92,74,80,87,86,11},37), Color3.fromRGB(255,80,80))
-			local _x183=_x163.Position
+			notify("Invalid key! Join Discord to get yours.", Color3.fromRGB(255,80,80))
+			local orig=KIF.Position
 			for _ = 1, 4 do
-				TweenService:Create(_x163,TweenInfo.new(0.04),{Position=UDim2.new(_x183.X.Scale,_x183.X.Offset+5,_x183.Y.Scale,_x183.Y.Offset)}):Play()
+				TweenService:Create(KIF,TweenInfo.new(0.04),{Position=UDim2.new(orig.X.Scale,orig.X.Offset+5,orig.Y.Scale,orig.Y.Offset)}):Play()
 				task.wait(0.045)
-				TweenService:Create(_x163,TweenInfo.new(0.04),{Position=UDim2.new(_x183.X.Scale,_x183.X.Offset-5,_x183.Y.Scale,_x183.Y.Offset)}):Play()
+				TweenService:Create(KIF,TweenInfo.new(0.04),{Position=UDim2.new(orig.X.Scale,orig.X.Offset-5,orig.Y.Scale,orig.Y.Offset)}):Play()
 				task.wait(0.045)
 			end
-			TweenService:Create(_x163,TweenInfo.new(0.04),{Position=_x183}):Play()
+			TweenService:Create(KIF,TweenInfo.new(0.04),{Position=orig}):Play()
 		end
 	end)
 
-	_x171.MouseButton1Click:Connect(function()
-		TweenService:Create(_x122,TweenInfo.new(0.45,Enum.EasingStyle.Back,Enum.EasingDirection.In),{
-			Size=UDim2.new(0,_x121,0,0), Position=UDim2.new(0.5,-_x121/2,0.5,0), BackgroundTransparency=1,
+	CloseBtn.MouseButton1Click:Connect(function()
+		TweenService:Create(Main,TweenInfo.new(0.45,Enum.EasingStyle.Back,Enum.EasingDirection.In),{
+			Size=UDim2.new(0,W,0,0), Position=UDim2.new(0.5,-W/2,0.5,0), BackgroundTransparency=1,
 		}):Play()
-		TweenService:Create(_x118,TweenInfo.new(0.45,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
-		task.wait(0.5); _x117:Destroy()
+		TweenService:Create(Blur,TweenInfo.new(0.45,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
+		task.wait(0.5); ScreenGui:Destroy()
 	end)
 
-
-	local _x184,dragStart,startPos=false,nil,nil
-	_x122.InputBegan:Connect(function(i)
+	-- Drag
+	local dragging,dragStart,startPos=false,nil,nil
+	Main.InputBegan:Connect(function(i)
 		if i.UserInputType==Enum.UserInputType.MouseButton1 then
-			_x184=true; dragStart=i.Position; startPos=_x122.Position
+			dragging=true; dragStart=i.Position; startPos=Main.Position
 		end
 	end)
-	_x122.InputEnded:Connect(function(i)
-		if i.UserInputType==Enum.UserInputType.MouseButton1 then _x184=false end
+	Main.InputEnded:Connect(function(i)
+		if i.UserInputType==Enum.UserInputType.MouseButton1 then dragging=false end
 	end)
 	UserInputService.InputChanged:Connect(function(i)
-		if _x184 and i.UserInputType==Enum.UserInputType.MouseMovement then
-			local _x185=i.Position-dragStart
-			_x122.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+_x185.X,startPos.Y.Scale,startPos.Y.Offset+_x185.Y)
+		if dragging and i.UserInputType==Enum.UserInputType.MouseMovement then
+			local d=i.Position-dragStart
+			Main.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+d.X,startPos.Y.Scale,startPos.Y.Offset+d.Y)
 		end
 	end)
 
-
-	_x122.Size=UDim2.new(0,0,0,0); _x122.Position=UDim2.new(0.5,0,0.5,0); _x122.BackgroundTransparency=1
-	_x118.BackgroundTransparency=1
-	TweenService:Create(_x118,TweenInfo.new(0.35,Enum.EasingStyle.Sine),{BackgroundTransparency=0.5}):Play()
+	-- Entrance animation
+	Main.Size=UDim2.new(0,0,0,0); Main.Position=UDim2.new(0.5,0,0.5,0); Main.BackgroundTransparency=1
+	Blur.BackgroundTransparency=1
+	TweenService:Create(Blur,TweenInfo.new(0.35,Enum.EasingStyle.Sine),{BackgroundTransparency=0.5}):Play()
 	task.wait(0.08)
-	TweenService:Create(_x122,TweenInfo.new(0.45,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{
-		Size=UDim2.new(0,_x121,0,H),
-		Position=UDim2.new(0.5,-_x121/2,0.5,-H/2),
+	TweenService:Create(Main,TweenInfo.new(0.45,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{
+		Size=UDim2.new(0,W,0,H),
+		Position=UDim2.new(0.5,-W/2,0.5,-H/2),
 		BackgroundTransparency=0,
 	}):Play()
 end
 
+-- ═══════════════════════════════════════════════════════════
+-- MAIN DRIVER  —  loading → burn exit → key system
+-- ═══════════════════════════════════════════════════════════
 task.spawn(function()
 	RunLoadProgress()
-	if not alive then return end
+	if not alive then return end  -- externally torn down
 	PlayBurnExit()
-
+	-- Loading screen is now destroyed — launch the key system
 	LaunchKeySystem()
 end)
